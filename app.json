@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "MyTodoApp",
-    "slug": "MyTodoApp",
+    "name": "GoBirdie",
+    "slug": "GoBirdie",
     "privacy": "public",
     "sdkVersion": "35.0.0",
     "platforms": ["ios", "android", "web"],
@@ -18,10 +18,10 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "com.fmchan.gobirdie"
     },
     "android": {
-      "package": "com.todolist.zeus"
+      "package": "com.fmchan.gobirdie"
     }
   }
 }

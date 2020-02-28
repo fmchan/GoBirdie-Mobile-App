@@ -1,110 +1,257 @@
-import React from "react";
-import { StyleSheet, View, FlatList, AsyncStorage } from "react-native";
-import Header from "./app/components/Header";
-import SubTitle from "./app/components/SubTitle";
-import Input from "./app/components/Input";
-import TodoItem from "./app/components/TodoItem";
+import React from 'react';
+import * as Font from "expo-font";
+
+import { Notifications } from 'expo';
+import * as Permissions from 'expo-permissions';
+import Constants from 'expo-constants';
+
+import { Image, View, Text, ActivityIndicator, Vibration } from 'react-native';
+import { Root } from "native-base";
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
+import Todo from "./app/containers/Todo";
+import MapPage from "./app/containers/MapPageContainer";
+import HomePage from "./app/containers/HomePageContainer";
+import SettingPage from "./app/containers/SettingPageContainer";
+import TextPage from "./app/containers/TextPageContainer";
+import PlaceListPage from "./app/containers/PlaceListContainer";
+import ArticleListPage from "./app/containers/ArticleListContainer";
+import DetailPage from "./app/containers/DetailPageContainer";
+import ArticleSearch from "./app/containers/ArticleSearchContainer";
+import ArticleResult from "./app/containers/ArticleResultContainer";
+import PlaceSearch from "./app/containers/PlaceSearchContainer";
+import PlaceResult from "./app/containers/PlaceResultContainer";
+import Bookmark from "./app/containers/BookmarkContainer";
+import HighlightPage from "./app/containers/HighlightContainer";
+import PlaceAdvanceSearch from "./app/containers/PlaceAdvanceSearchContainer";
+
+const Placeholder = ({ text }) => (
+  <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <Text>{text}</Text>
+  </View>
+);
+
+class A extends React.Component {
+  static navigationOptions = {
+    tabBarLabel: 'Home!',
+  };
+
+  render() {
+    return <Placeholder text="A!" />;
+  }
+}
+
+class B extends React.Component {
+  static navigationOptions = {
+    tabBarLabel: 'Settings!',
+  };
+
+  render() {
+    return <Placeholder text="B!" />;
+  }
+}
+
+let PlacePage = createStackNavigator({ 
+  PlaceListPage: { screen: PlaceListPage, navigationOptions: {header: null} },
+  PlaceSearch: { screen: PlaceSearch, navigationOptions: {header: null} },
+  PlaceAdvanceSearch: { screen: PlaceAdvanceSearch, navigationOptions: {header: null} },
+  PlaceResult: { screen: PlaceResult },
+  PlaceDetail: { screen: DetailPage, navigationOptions: {header: null} },
+  MapPage: { screen: MapPage }
+});
+let ArticlePage = createStackNavigator({
+  ArticleListPage: { screen: ArticleListPage, navigationOptions: {header: null} },
+  ArticleSearch: { screen: ArticleSearch, navigationOptions: {header: null} },
+  ArticleResult: { screen: ArticleResult },
+  ArticleDetail: { screen: DetailPage, navigationOptions: {header: null} },
+  MapPage: { screen: MapPage }
+});
+let Home = createStackNavigator({
+  HomePage: { screen: HomePage, navigationOptions: {header: null} },
+  ArticleSearch: { screen: ArticleSearch, navigationOptions: {header: null} },
+  ArticleResult: { screen: ArticleResult },
+  HighlightPage: { screen: HighlightPage }
+});
+let Menu = createStackNavigator({ 
+  SettingPage: { screen: SettingPage, navigationOptions: {header: null} },
+  TextPage: { screen: TextPage },
+});
+
+const path = `./assets/icons/`;
+
+const RootPage = createAppContainer(createBottomTabNavigator({
+  Place: {
+    screen: PlacePage,
+    navigationOptions: {
+      title: '好去處',
+      tabBarIcon: ({ focused, tintColor }) => {
+        const iconActive = `icon1_c-01.png`;
+        const iconInactive = `icon1-01.png`;
+        return <Image style={{ width:40, height:40 }} source={focused? require(path + iconActive): require(path + iconInactive)} />;
+      },
+    },
+  },
+  Article: {
+    screen: ArticlePage,
+    navigationOptions: {
+      title: '情報',
+      tabBarIcon: ({ focused, tintColor }) => {
+        const iconActive = `icon2_c-01.png`;
+        const iconInactive = `icon2-01.png`;
+        return <Image style={{ width:40, height:40 }} source={focused? require(path + iconActive): require(path + iconInactive)} />;
+      },
+    },
+  },
+  Home: {
+    screen: Home,
+    navigationOptions: {
+      title: '主頁',
+      tabBarIcon: ({ focused, tintColor }) => {
+        const iconActive = `icon5_c-01.png`;
+        const iconInactive = `icon5-01.png`;
+        return <Image style={{ width:40, height:40 }} source={focused? require(path + iconActive): require(path + iconInactive)} />;
+     },
+    },
+  },
+  Bookmark: {
+    screen: Bookmark,
+    navigationOptions: {
+      title: '書籤',
+      tabBarIcon: ({ focused, tintColor }) => {
+        const iconActive = `icon3_c-01.png`;
+        const iconInactive = `icon3-01.png`;
+        return <Image style={{ width:40, height:40 }} source={focused? require(path + iconActive): require(path + iconInactive)} />;
+      },
+    },
+  },
+  Menu: {
+    screen: Menu,
+    navigationOptions: {
+      title: '菜單',
+      tabBarIcon: ({ focused, tintColor }) => {
+        const iconActive = `icon4_c-01.png`;
+        const iconInactive = `icon4-01.png`;
+        return <Image style={{ width:40, height:40 }} source={focused? require(path + iconActive): require(path + iconInactive)} />;
+      },
+    },
+  },
+},
+{
+  initialRouteName: "Home",
+  tabBarOptions:{
+    activeTintColor: 'black',
+    inactiveTintColor: 'gray',
+    labelStyle: {
+      fontSize: 18,
+      //fontSize: ScreenUtil.scale(14),
+    },
+    style: {
+      height: 70,
+      //borderTopWidth: 1,
+      //borderTopColor: 'red'
+    },
+  }
+}));
+
+
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      inputValue: "",
-      todos: []
+    this.state = { 
+      expoPushToken : '',
+      notification: {},
+      loading: true 
     };
   }
-  //
-  componentWillMount() {
-    this.getData();
-  }
-  storeData = () => {
-    AsyncStorage.setItem("@todo:state", JSON.stringify(this.state));
-  };
-  getData = () => {
-    AsyncStorage.getItem("@todo:state").then(state => {
-      if (state !== null) {
-        this.setState(JSON.parse(state));
-      }
-    });
-  };
-  _makeTodoItem = ({ item, index }) => {
-    return (
-      <TodoItem
-        text={item.title}
-        iscomplete={item.iscomplete}
-        changeComplete={() => {
-          const newTodo = [...this.state.todos];
-          newTodo[index].iscomplete = !newTodo[index].iscomplete;
-          this.setState({ todos: newTodo }, this.storeData);
-        }}
-        deleteItem={() => {
-          const newTodo = [...this.state.todos];
-          newTodo.splice(index, 1);
-          this.setState({ todos: newTodo }, this.storeData);
-        }}
-      />
-    );
-  };
-  _changeText = value => {
-    this.setState({ inputValue: value });
-  };
-  _addTodoItem = () => {
-    if (this.state.inputValue !== "") {
-      const prevTodo = this.state.todos;
 
-      const newTodo = { title: this.state.inputValue, iscomplete: false };
-
-      this.setState(
-        {
-          inputValue: "",
-          todos: prevTodo.concat(newTodo)
+  subscribe(token) {
+    fetch("http://34.80.70.229:7000/api/subscribe",
+    {
+      method: 'POST', 
+      headers: {
+          'Accept': 'application/json, text/plain, */*',
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({token:token}),
+    }
+      )
+      .then(res => res.json())
+      .then(
+        (result) => {
+          if(!result.success) return;
+          console.log(result);
         },
-        this.storeData
+        (error) => {
+          console.error(error);
+        }
+      )
+  }
+
+  registerForPushNotificationsAsync = async () => {
+    if (Constants.isDevice) {
+      const { status: existingStatus } = await Permissions.getAsync(
+        Permissions.NOTIFICATIONS
       );
+      let finalStatus = existingStatus;
+      if (existingStatus !== 'granted') {
+        const { status } = await Permissions.askAsync(
+          Permissions.NOTIFICATIONS
+        );
+        finalStatus = status;
+      }
+      if (finalStatus !== 'granted') {
+        alert('Failed to get push token for push notification!');
+        return;
+      }
+      let token = await Notifications.getExpoPushTokenAsync();
+      this.setState({expoPushToken: token}, () => {
+        console.log(token);
+        this.subscribe(token);
+      });
+    } else {
+      alert('Must use physical device for Push Notifications');
     }
   };
-  render() {
-    return (
-      <View style={styles.container}>
-        <View style={styles.headerCentered}>
-          <Header />
-        </View>
-        <View style={styles.subContainer}>
-          <SubTitle title="해야 할 일" />
-          <Input
-            value={this.state.inputValue}
-            changeText={this._changeText}
-            addTodoItem={this._addTodoItem}
-          />
-        </View>
-        <View style={styles.listContainer}>
-          <SubTitle title="해야 할 일 목록" />
 
-          <FlatList
-            data={this.state.todos}
-            renderItem={this._makeTodoItem}
-            keyExtractor={(item, index) => {
-              return `${index}`;
-            }}
-          />
-        </View>
-      </View>
+  componentDidMount() {
+    this.registerForPushNotificationsAsync();
+
+    // Handle notifications that are received or selected while the app
+    // is open. If the app was closed and then opened by tapping the
+    // notification (rather than just tapping the app icon to open it),
+    // this function will fire on the next tick after the app starts
+    // with the notification data.
+    this._notificationSubscription = Notifications.addListener(
+      this._handleNotification
+    );
+  }
+
+  _handleNotification = notification => {
+    Vibration.vibrate()
+    this.setState({ notification: notification }, () => {
+      console.log(JSON.stringify(notification));
+      });
+  };
+
+  async componentWillMount() {
+    await Font.loadAsync({
+      Roboto: require("native-base/Fonts/Roboto.ttf"),
+      Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
+      Ionicons: require("@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/Ionicons.ttf"),
+    });
+    this.setState({ loading: false });
+  }
+
+  render() {
+    if (this.state.loading) {
+      return <ActivityIndicator />;
+    }
+    return (
+      <Root>
+        <RootPage />
+      </Root>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
-  headerCentered: {
-    alignItems: "center"
-  },
-  subContainer: {
-    marginLeft: 20
-  },
-  listContainer: {
-    marginTop: 30,
-    marginLeft: 20
-  }
-});

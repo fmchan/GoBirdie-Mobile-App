@@ -7,7 +7,7 @@ const Input = ({ value, changeText, addTodoItem }) => (
     onChangeText={changeText}
     onEndEditing={addTodoItem}
     style={styles.input}
-    placeholder={"오늘의 할 일"}
+    placeholder={"今天要做"}
     maxLength={30}
     returnKeyType="done"
   />
