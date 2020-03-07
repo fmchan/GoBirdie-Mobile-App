@@ -2,7 +2,7 @@ import * as React from "react";
 import { TouchableOpacity, ActivityIndicator, AsyncStorage, StatusBar, Platform, Content, Text, View, StyleSheet, Image, ScrollView } from 'react-native';
 import { Input, Item, Separator, Icon, Button } from 'native-base';
 import { SafeAreaView } from 'react-navigation';
-import Slideshow from 'react-native-slideshow';
+import Slideshow from 'react-native-image-slider-show-razzium';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 
 import ArticleList from "../components/ArticleList";

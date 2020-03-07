@@ -55,7 +55,7 @@ class B extends React.Component {
 let PlacePage = createStackNavigator({ 
   PlaceListPage: { screen: PlaceListPage, navigationOptions: {header: null} },
   PlaceSearch: { screen: PlaceSearch, navigationOptions: {header: null} },
-  PlaceAdvanceSearch: { screen: PlaceAdvanceSearch, navigationOptions: {header: null} },
+  PlaceAdvanceSearch: { screen: PlaceAdvanceSearch },
   PlaceResult: { screen: PlaceResult },
   PlaceDetail: { screen: DetailPage, navigationOptions: {header: null} },
   MapPage: { screen: MapPage }

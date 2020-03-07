@@ -3,7 +3,7 @@ import { ActivityIndicator, AsyncStorage, Linking, StatusBar, Platform, View, St
 import { SafeAreaView } from 'react-navigation';
 import { Button, List, ListItem, Text, Icon, Left, Body, Right, Switch, H2, Card, CardItem, Separator, Thumbnail } from 'native-base';
 import { SearchBar } from 'react-native-elements';
-import Slideshow from 'react-native-slideshow';
+import Slideshow from 'react-native-image-slider-show-razzium';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import HTML from 'react-native-render-html';
 

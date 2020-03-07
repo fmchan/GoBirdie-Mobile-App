@@ -17,8 +17,9 @@ export default class PlaceResultContainer extends React.Component {
       isLoaded: false,
       places: [],
       currentPage: 0,
-      text: param.text,
+      text: param.text != null? param.text: null,
       categories: [],
+      advanceSearch: param.advanceSearch != null? param.advanceSearch: [],
     };
   }
 
@@ -28,10 +29,15 @@ export default class PlaceResultContainer extends React.Component {
   }
 
   fetchPlaces() {
-    var { currentFilter, currentPage, text, chosenDate } = this.state;
+    var { currentFilter, currentPage, text, chosenDate, advanceSearch } = this.state;
 
-    var params = (currentPage != 0? ("&categories=" + currentPage) : "")
+    var params = (currentPage != 0? ("&categories=" + currentPage) : "");
                + (text != ''? ("&search=" + text) : "");
+    if(advanceSearch.length > 0)
+      advanceSearch.forEach(function (a, index) {
+        if(a.value != null)
+          params += "&" + a.field + "=" + a.value;
+      });
     console.log('?'+params.substr(1));
     fetch("http://34.80.70.229:7000/api/places?" + params.substr(1))
       .then(res => res.json())
@@ -77,7 +83,7 @@ export default class PlaceResultContainer extends React.Component {
 
   static navigationOptions = ({ navigation }) => {
     return {
-      title: '搜尋結果 ('+ navigation.getParam('text', 'N/A') +')',
+      title: '搜尋結果 ('+ navigation.getParam('text', '進階') + ')',
     };
   };
 
