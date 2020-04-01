@@ -6,6 +6,7 @@ import { SearchBar } from 'react-native-elements';
 import Slideshow from 'react-native-image-slider-show-razzium';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import HTML from 'react-native-render-html';
+import Modal, { ModalContent } from 'react-native-modals';
 
 import ArticleList from "../components/ArticleList";
 import RecommendList from "../components/RecommendList";
@@ -28,6 +29,7 @@ export default class DetailPageContainer extends React.Component {
       shortData: param.item.data,
       bookmarked: param.item.bookmarked,
       liked: param.item.liked,
+      modalTransport: false,
     };
   }
 
@@ -328,8 +330,27 @@ export default class DetailPageContainer extends React.Component {
                 <Text numberOfLines={1}>{data.address}</Text>
                 <Text note numberOfLines={1}>{data.transport_short}</Text>
               </Body>
-              <Right style={{ marginTop:15 }}>
-                <Thumbnail source={require('../../assets/details/traffic.png')} />
+              <Right style={{ width:90 }}>
+                <Button transparent 
+                title="Show Modal"
+                onPress={() => {
+                  this.setState({ modalTransport: true });
+                }}
+                style={{ marginTop:15, flex: 1, flexDirection: 'column', alignItems: 'center' }}>
+                   <Image style={{ width:70, height:70 }} 
+                source={require('../../assets/details/traffic.png')} />
+                    <Text style={{ width:85, fontSize:12 }} >交通資訊</Text>
+                </Button>
+                <Modal
+                  visible={this.state.modalTransport}
+                  onTouchOutside={() => {
+                    this.setState({ modalTransport: false });
+                  }}
+                >
+                  <ModalContent>
+                    <Text>{data.transport_long}</Text>
+                  </ModalContent>
+                </Modal>
               </Right>
             </ListItem>
           { list.map((item, i) => (

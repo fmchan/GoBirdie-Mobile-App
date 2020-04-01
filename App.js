@@ -5,7 +5,7 @@ import { Notifications } from 'expo';
 import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
 
-import { Image, View, Text, ActivityIndicator, Vibration } from 'react-native';
+import { Image, View, Text, ActivityIndicator } from 'react-native';
 import { Root } from "native-base";
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
@@ -211,7 +211,7 @@ export default class App extends React.Component {
         this.subscribe(token);
       });
     } else {
-      alert('Must use physical device for Push Notifications');
+      console.log('Must use physical device for Push Notifications');
     }
   };
 
@@ -223,17 +223,10 @@ export default class App extends React.Component {
     // notification (rather than just tapping the app icon to open it),
     // this function will fire on the next tick after the app starts
     // with the notification data.
-    this._notificationSubscription = Notifications.addListener(
+    /*this._notificationSubscription = Notifications.addListener(
       this._handleNotification
-    );
+    );*/
   }
-
-  _handleNotification = notification => {
-    Vibration.vibrate()
-    this.setState({ notification: notification }, () => {
-      console.log(JSON.stringify(notification));
-      });
-  };
 
   async componentWillMount() {
     await Font.loadAsync({

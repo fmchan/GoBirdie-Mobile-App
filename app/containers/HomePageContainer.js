@@ -1,5 +1,6 @@
 import * as React from "react";
-import { TouchableOpacity, ActivityIndicator, AsyncStorage, StatusBar, Platform, Content, Text, View, StyleSheet, Image, ScrollView } from 'react-native';
+import { Notifications } from 'expo';
+import { Linking, Vibration, TouchableOpacity, ActivityIndicator, AsyncStorage, StatusBar, Platform, Content, Text, View, StyleSheet, Image, ScrollView } from 'react-native';
 import { Input, Item, Separator, Icon, Button } from 'native-base';
 import { SafeAreaView } from 'react-navigation';
 import Slideshow from 'react-native-image-slider-show-razzium';
@@ -25,7 +26,20 @@ export default class HomePageContainer extends React.Component {
 
   componentDidMount() {
     this.fetchHome();
+
+    this._notificationSubscription = Notifications.addListener(
+      this._handleNotification
+    );
   }
+
+  _handleNotification = notification => {
+    Vibration.vibrate()
+    this.setState({ notification: notification }, () => {
+      console.log(JSON.stringify(notification));
+      if(notification.data != null)
+        this.navigateDetail(notification.data.type, notification.data.link);
+    });
+  };
 
   async _storePaths(paths) {
     try {
@@ -41,6 +55,20 @@ export default class HomePageContainer extends React.Component {
       console.error(error);
     }
   };
+
+  navigateDetail(type, link) {
+    if(type == 'A') {
+      this.props.navigation.navigate("ArticleDetail", {
+        item: {type: 'A', data: {id: link}, image_path: this.state.paths.articles, bookmarked: false, liked: false}
+      })
+    } else if(type == 'P') {
+      this.props.navigation.navigate("PlaceDetail", {
+        item: {type: 'P', data: {id: link}, image_path: this.state.paths.places, bookmarked: false, liked: false}
+      })
+    } else if(type == 'E') {
+      Linking.openURL(link);
+    }
+  }
 
   fetchHome() {
     fetch("http:\/\/34.80.70.229:7000\/api\/home",
@@ -66,6 +94,8 @@ export default class HomePageContainer extends React.Component {
            slides.push({
              id: el.id,
              title: el.title,
+             type: el.type,
+             link: el.link,
              url: image,
            });
           });
@@ -95,6 +125,10 @@ export default class HomePageContainer extends React.Component {
 
   handleSlides = ({image, index}) => {
     console.log(index);
+    type = this.state.slides[index].type;
+    link = this.state.slides[index].link;
+    console.log(index, + ", " + type + ", " + link);
+    this.navigateDetail(type, link);
   };
 
 
