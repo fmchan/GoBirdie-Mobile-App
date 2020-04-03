@@ -129,7 +129,7 @@ export default class DetailPageContainer extends React.Component {
     this._bookmark(type == 'A'? 'articles': 'places', data, bookmarked, false);
     this._bookmark(type == 'A'? 'article_ids': 'place_ids', data.id, bookmarked, true);
     this.setState({
-      bookmarked: !bookmarked,
+      bookmarked: bookmarked,
     });
   }
 
@@ -138,13 +138,14 @@ export default class DetailPageContainer extends React.Component {
       const value = await AsyncStorage.getItem('@birdie:bookmarks.'+field);
       if (value !== null) {
         arr = JSON.parse(value);
-        if(bookmarked)
+        if(!bookmarked)
           arr.unshift(i);
         else
           arr = isId? arr.filter(e => e !== i): arr.filter(e => e.id !== i.id);
       } else if(bookmarked) {
         arr = [i];
       }
+      console.log('arr: ' + JSON.stringify(arr));
       await AsyncStorage.setItem('@birdie:bookmarks.'+field, JSON.stringify(arr));
     } catch (error) {
       console.error(error);
@@ -309,7 +310,7 @@ export default class DetailPageContainer extends React.Component {
               </View>
             </Col>
             <Col style={{ height: 80 }}
-              onPress={() => this._bookmarkButton(type, shortData, bookmarked)}
+              onPress={() => this._bookmarkButton(type, shortData, !bookmarked)}
             >
               <View style={{ flex: 1, justifyContent:'center', alignItems:'center' }}>
               {bookmarked && <Image style={{ width:50, flex: 1 }} resizeMode="contain"

@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Updates } from 'expo';
 import { Dimensions, AsyncStorage, ActivityIndicator, StyleSheet, Image, View, ScrollView } from 'react-native';
 import { Left, Right, Icon, Separator, Header, Content, List, ListItem, Text } from 'native-base';
 import {expo} from '../../app.json'
@@ -65,20 +66,21 @@ export default class SettingPageContainer extends React.Component {
       <ScrollView style={{ flex: 1, flexDirection: 'column' }}>
       <View style={{flex: 1,justifyContent: 'center', alignItems: 'center', paddingVertical:50}}>
         <Image style={styles.image} resizeMode={'contain'} source={require('../../assets/logo-01.png')} />
-        </View>
+      </View>
           <List>
-          {/*<Separator bordered style={{height:50}}>
+          <Separator bordered style={{height:50}}>
             <Text style={styles.header}>設置</Text>
           </Separator>
             <ListItem
             onPress={() => {
                     AsyncStorage.clear();
+                    Updates.reload();
             }}
             >
               <Left>
               <Text>清除緩存</Text>
               </Left>
-            </ListItem>*/}
+            </ListItem>
           <Separator bordered style={{height:50}}>
             <Text style={styles.header}>更多</Text>
           </Separator>
