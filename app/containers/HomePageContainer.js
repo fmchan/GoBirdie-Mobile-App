@@ -71,7 +71,7 @@ export default class HomePageContainer extends React.Component {
   }
 
   fetchHome() {
-    fetch("http:\/\/34.80.70.229:7000\/api\/home",
+    fetch("https://gobirdie.hk/app/admin3s/api/home",
     {
       headers: {
           'Accept': 'application/json, text/plain, */*',
@@ -151,7 +151,7 @@ export default class HomePageContainer extends React.Component {
             </View>
             <ScrollView>
             { slides &&
-              <Slideshow dataSource={slides} onPress={this.handleSlides} />
+              <Slideshow dataSource={slides} onPress={this.handleSlides} titleStyle={{ fontSize: 24, fontWeight: 'bold', color:'white'}} />
             }
             { paths && categories2D &&
             <Grid>

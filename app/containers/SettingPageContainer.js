@@ -31,7 +31,7 @@ export default class SettingPageContainer extends React.Component {
   }
 
   fetchData() {
-    fetch("http://34.80.70.229:7000/api/pages",
+    fetch("https://gobirdie.hk/app/admin3s/api/pages",
     {
       headers: {
           'Accept': 'application/json, text/plain, */*',

@@ -66,7 +66,7 @@ export default class DetailPageContainer extends React.Component {
   fetchData(type, id, image_path) {
     var myHeaders = new Headers();
     myHeaders.append('Content-Type','text/plain; charset=UTF-8');
-    fetch("http://34.80.70.229:7000/api/"+(type == 'A'? 'articles': 'places')+"/"+id, myHeaders)
+    fetch("https://gobirdie.hk/app/admin3s/api/"+(type == 'A'? 'articles': 'places')+"/"+id, myHeaders)
       .then(result => result.json())
       .then(
         (result) => {
@@ -184,7 +184,7 @@ export default class DetailPageContainer extends React.Component {
   };
 
   operateHeart(type, id, liked, heart) {
-    fetch("http://34.80.70.229:7000/api/"+(type == 'A'? 'articles': 'places')+"/"+id+"/heart", {
+    fetch("https://gobirdie.hk/app/admin3s/api/"+(type == 'A'? 'articles': 'places')+"/"+id+"/heart", {
       method: 'POST', 
       headers: {
           'Accept': 'application/json, text/plain, */*',

@@ -167,7 +167,7 @@ export default class App extends React.Component {
   }
 
   subscribe(token) {
-    fetch("http://34.80.70.229:7000/api/subscribe",
+    fetch("https://gobirdie.hk/app/admin3s/api/subscribe",
     {
       method: 'POST', 
       headers: {

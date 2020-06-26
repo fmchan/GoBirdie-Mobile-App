@@ -117,7 +117,7 @@ export default class ArticleList extends React.Component {
 	};
 
 	operateHeart(id, liked, heart) {
-		fetch("http://34.80.70.229:7000/api/articles/"+id+"/heart", {
+		fetch("https://gobirdie.hk/app/admin3s/api/articles/"+id+"/heart", {
 			method: 'POST', 
 			headers: {
 			    'Accept': 'application/json, text/plain, */*',

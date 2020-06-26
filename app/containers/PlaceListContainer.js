@@ -46,7 +46,7 @@ export default class PlaceListContainer extends React.Component {
 
     var params = (currentPage != 0? ("&categories=" + currentPage) : "")
     console.log('?'+params.substr(1));
-    fetch("http://34.80.70.229:7000/api/places?" + params.substr(1))
+    fetch("https://gobirdie.hk/app/admin3s/api/places?" + params.substr(1))
       .then(res => res.json())
       .then(
         (result) => {
@@ -66,7 +66,7 @@ export default class PlaceListContainer extends React.Component {
       )
   }
   fetchCategories() {
-    fetch("http://34.80.70.229:7000/api/category_places")
+    fetch("https://gobirdie.hk/app/admin3s/api/category_places")
       .then(res => res.json())
       .then(
         (result) => {

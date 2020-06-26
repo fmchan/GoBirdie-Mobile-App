@@ -22,7 +22,7 @@ export default class ArticleSearchContainer extends React.Component {
     this._retrieveRecentSearches();
   }
   fetchHotKeywords() {
-    fetch("http://34.80.70.229:7000/api/hot_keyword_articles")
+    fetch("https://gobirdie.hk/app/admin3s/api/hot_keyword_articles")
       .then(res => res.json())
       .then(
         (result) => {
@@ -42,7 +42,7 @@ export default class ArticleSearchContainer extends React.Component {
       )
   }
   fetchRecommendPlaces() {
-    fetch("http://34.80.70.229:7000/api/recommend_places?type=A")
+    fetch("https://gobirdie.hk/app/admin3s/api/recommend_places?type=A")
       .then(res => res.json())
       .then(
         (result) => {

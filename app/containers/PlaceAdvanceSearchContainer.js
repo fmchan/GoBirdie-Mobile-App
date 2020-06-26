@@ -70,7 +70,7 @@ export default class PlaceAdvanceSearchContainer extends React.Component {
   }
 
   fetchData() {
-    fetch("http://34.80.70.229:7000/api/advance",
+    fetch("https://gobirdie.hk/app/admin3s/api/advance",
     {
       headers: {
           'Accept': 'application/json, text/plain, */*',

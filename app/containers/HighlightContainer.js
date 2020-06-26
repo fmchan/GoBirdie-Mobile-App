@@ -29,7 +29,7 @@ export default class HighlightContainer extends React.Component {
   }
 
   fetchData() {
-    fetch("http://34.80.70.229:7000/api/" + (this.state.type == 'A'? 'highlight_articles': 'highlight_places'),
+    fetch("https://gobirdie.hk/app/admin3s/api/" + (this.state.type == 'A'? 'highlight_articles': 'highlight_places'),
     {
       headers: {
           'Accept': 'application/json, text/plain, */*',

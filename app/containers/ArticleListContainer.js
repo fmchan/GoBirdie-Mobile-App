@@ -50,7 +50,7 @@ export default class ArticleListContainer extends React.Component {
     var params = (currentPage != 0? ("&categories=" + currentPage) : "")
                + (display != null? ("&display=" + display.format('YYYY-MM-DD')) : "")
     console.log('?'+params.substr(1));
-    fetch("http://34.80.70.229:7000/api/articles?" + params.substr(1))
+    fetch("https://gobirdie.hk/app/admin3s/api/articles?" + params.substr(1))
       .then(res => res.json())
       .then(
         (result) => {
@@ -70,7 +70,7 @@ export default class ArticleListContainer extends React.Component {
       )
   }
   fetchCategories() {
-    fetch("http://34.80.70.229:7000/api/category_articles")
+    fetch("https://gobirdie.hk/app/admin3s/api/category_articles")
       .then(res => res.json())
       .then(
         (result) => {
