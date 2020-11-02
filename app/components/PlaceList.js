@@ -111,17 +111,18 @@ export default class PlaceList extends React.Component {
 	_renderItem = ({item}) => {
 	item.bookmarked = this.state.bookmark_place_ids.includes(item.id);
 	return (
+	<TouchableOpacity onPress={() =>
+		    this.props.navigation.navigate("PlaceDetail", {
+		   	  item: {type: 'P', data: item, image_path: this.state.path_places, bookmarked: item.bookmarked}
+		    })
+		  }>
 	<View style={{ paddingVertical: 20, paddingHorizontal: 10, borderBottomColor: '#ccc', borderBottomWidth: 1 }}>
 		<TouchableOpacity style={{position: 'absolute', right: 10, top: 20}} onPress={() => item.bookmarked = this._bookmarkPlace(item, !item.bookmarked)}>
 			{ !item.bookmarked && <Icon type="FontAwesome" name="bookmark-o" style={{color: '#ffb701', fontSize: 25}} /> }
 			{ item.bookmarked && <Icon type="FontAwesome" name="bookmark" style={{color: '#ffb701', fontSize: 25}} /> }
 		</TouchableOpacity>
 		<Text numberOfLines={1} style={{fontSize: 22, marginRight: 20}}
-		   onPress={() =>
-		    this.props.navigation.navigate("PlaceDetail", {
-		   	  item: {type: 'P', data: item, image_path: this.state.path_places, bookmarked: item.bookmarked}
-		    })
-		  }>{item.title} <Icon type="Ionicons" name="ios-arrow-forward" style={{fontSize: 22}} /></Text>
+		   >{item.title} <Icon type="Ionicons" name="ios-arrow-forward" style={{fontSize: 22}} /></Text>
 		<Text note numberOfLines={1} style={{fontSize: 18, color: 'grey', marginVertical: 10}}>{this.getCatNames(item.categories).join("/")}</Text>
 		<View style={{flex: 1, flexDirection: 'row'}}>
 	      {
@@ -129,7 +130,7 @@ export default class PlaceList extends React.Component {
 	        	//console.log('f: '+ this.state.path_facilities+facility.icon);
 	          return (
 	            <Image key={key} 
-	            style={{ width:30, height:40, marginRight:10 }}
+	            style={{ width:35, height:40, marginRight:10 }}
 	            source={{ uri: this.state.path_facilities+facility.icon }} 
 	            onError={e => {
 	              console.error(e);
@@ -138,8 +139,8 @@ export default class PlaceList extends React.Component {
 	        })
 	      }
 		</View>
-		<Text numberOfLines={1} style={{fontSize: 20, color: 'grey', marginTop: 10}}><Icon type="Entypo" name="location-pin" style={{fontSize: 20}} />{item.address}</Text>
-		<Text numberOfLines={1} style={{fontSize: 20, marginVertical: 10}}><Icon type="Entypo" name="phone" style={{fontSize: 20}} />{item.telephone}</Text>
+		{ item.address && <Text numberOfLines={1} style={{fontSize: 20, color: 'grey', marginVertical: 10}}><Icon type="Entypo" name="location-pin" style={{fontSize: 20}} />{item.address}</Text>}
+		{ item.telephone && <Text numberOfLines={1} style={{fontSize: 20, marginVertical: 10}}><Icon type="Entypo" name="phone" style={{fontSize: 20}} />{item.telephone}</Text>}
 		<Grid>
 	      { item.photos &&
 	        item.photos.fromArrayWithSize(photoAllowSize).map((photo, key) => {
@@ -159,6 +160,7 @@ export default class PlaceList extends React.Component {
 	      }
 		</Grid>
 	</View>
+	</TouchableOpacity>
 	)};
 
 	render() {

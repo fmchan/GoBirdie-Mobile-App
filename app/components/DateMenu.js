@@ -8,6 +8,7 @@ export default class DateMenu extends React.Component {
     this.datepick = React.createRef();
   }
   filter = [
+      {"id":0,"name":'全部'},
       {"id":1,"name":'明天'},
       {"id":2,"name":'後天'},
       {"id":3,"name":'週未'},

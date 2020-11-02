@@ -23,24 +23,24 @@ export default class CategoryMenu extends React.Component {
 
 const styles = StyleSheet.create({
   menuItem: {
-    padding: 18,
+    padding: 17,
     justifyContent: 'center',
     borderBottomWidth: 5,
     borderBottomColor: "white",
   },
   activeMenuItem: {
-    padding: 18,
+    padding: 17,
     justifyContent: 'center',
     borderBottomWidth: 5,
     borderBottomColor: '#ffb701',
   },
 
   menuItemText: {
-    fontSize: 18,
+    fontSize: 17,
     color: "#919191"
   },
   activeMenuItemText: {
-    fontSize: 18,
+    fontSize: 17,
     fontWeight: "bold",
     color: "black"
   },

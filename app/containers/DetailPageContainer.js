@@ -328,7 +328,7 @@ export default class DetailPageContainer extends React.Component {
                 <Icon type='Entypo' name='location-pin' style={styles.icon} />
               </Left>
               <Body>
-                <Text numberOfLines={1}>{data.address}</Text>
+                <Text>{data.address}</Text>
                 <Text note numberOfLines={1}>{data.transport_short}</Text>
               </Body>
               <Right style={{ width:90 }}>
