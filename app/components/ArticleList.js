@@ -189,8 +189,8 @@ export default class ArticleList extends React.Component {
 	    	style={{position: 'absolute', right: 0}}
 	    	onPress={() => item.heart = this.operateHeart(item.id, item.liked = !item.liked, item.heart)}>
 		    <Text style={{color: '#999'}}>
-		    { !item.liked && <Icon type="Entypo" name="heart-outlined" style={{color: '#999', fontSize: 15}} /> }
-		    { item.liked && <Icon type="Entypo" name="heart" style={{color: '#ffb701', fontSize: 15}} /> }
+		    { !item.liked && <Icon type="Entypo" name="heart-outlined" style={{color: '#999', fontSize: 14}} /> }
+		    { item.liked && <Icon type="Entypo" name="heart" style={{color: '#ffb701', fontSize: 14}} /> }
 		    {item.heart}</Text>
 		</TouchableOpacity>
 	  </View>

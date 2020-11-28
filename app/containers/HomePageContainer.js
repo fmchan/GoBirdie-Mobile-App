@@ -1,10 +1,12 @@
 import * as React from "react";
 import { Notifications } from 'expo';
-import { Linking, Vibration, TouchableOpacity, ActivityIndicator, AsyncStorage, StatusBar, Platform, Content, Text, View, StyleSheet, Image, ScrollView } from 'react-native';
-import { Input, Item, Separator, Icon, Button } from 'native-base';
+import { Vibration, TouchableOpacity, ActivityIndicator, AsyncStorage, StatusBar, Platform, Content, Text, View, StyleSheet, Image, ScrollView } from 'react-native';
+import { Input, Item, Icon, Button } from 'native-base';
 import { SafeAreaView } from 'react-navigation';
 import Slideshow from 'react-native-image-slider-show-razzium';
 import { Col, Row, Grid } from 'react-native-easy-grid';
+import * as Linking from 'expo-linking';
+import Separator from "../components/Separator";
 
 import ArticleList from "../components/ArticleList";
 import PlaceList from "../components/PlaceList";
@@ -30,6 +32,13 @@ export default class HomePageContainer extends React.Component {
     this._notificationSubscription = Notifications.addListener(
       this._handleNotification
     );
+
+    Linking.getInitialURL().then(this.urlRedirect);
+
+    // listen for new url events coming from Expo
+    Linking.addEventListener('url', event => {
+        this.urlRedirect(event.url);
+    });
   }
 
   _handleNotification = notification => {
@@ -70,6 +79,14 @@ export default class HomePageContainer extends React.Component {
     }
   }
 
+  urlRedirect(url) {
+      if(!url) return;
+      // parse and redirect to new url
+      let { path, queryParams } = Linking.parse(url);
+      console.log(`Linked to app with path: ${path} and data: ${JSON.stringify(queryParams)}`);
+      this.navigateDetail(queryParams.type, queryParams.id);
+  }
+
   fetchHome() {
     fetch("https://gobirdie.hk/app/admin3s/api/home",
     {
@@ -94,6 +111,7 @@ export default class HomePageContainer extends React.Component {
            slides.push({
              id: el.id,
              title: el.title,
+             caption: ' ',
              type: el.type,
              link: el.link,
              url: image,
@@ -141,17 +159,40 @@ export default class HomePageContainer extends React.Component {
         <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
           <View style={styles.container}>
             <View style={{margin:15}}>
-              <Item searchBar rounded style={{backgroundColor:"#ededed", padding:15}}
+              <Item searchBar rounded style={{backgroundColor:"#E3EBEE", padding:15}}
               onPress={() => this.props.navigation.navigate("PlaceSearch")}>
-                <Icon name="ios-search" />
+                <Icon name="ios-search" style={{color:"#aaa"}} />
                 <TouchableOpacity onPress={() => this.props.navigation.navigate("PlaceSearch")}>
-                <Input placeholder="搜尋好去處" editable={false} />
+                <Input placeholderTextColor="#aaa" placeholder="搜尋好去處" editable={false} />
                 </TouchableOpacity>
               </Item>
             </View>
             <ScrollView>
             { slides &&
-              <Slideshow dataSource={slides} onPress={this.handleSlides} titleStyle={{ fontSize: 24, fontWeight: 'bold', color:'white'}} />
+              <Slideshow 
+                dataSource={slides} 
+                onPress={this.handleSlides} 
+                indicatorSize={0}
+                titleStyle={{
+                  zIndex: 1,
+                  fontSize: 20, 
+                  padding: 10,
+                  color:'white', 
+                  opacity: 1,
+                  position: 'absolute',
+                  left: 0,
+                  top: -12,
+                }} 
+                captionStyle={{
+                  flex: 1,
+                  position: 'absolute',
+                  left: 0,
+                  top: -10,
+                  opacity: 0.5,
+                  backgroundColor: 'black',
+                  height: 40,
+                  width: '150%'
+                }} />
             }
             { paths && categories2D &&
             <Grid>
@@ -183,7 +224,7 @@ export default class HomePageContainer extends React.Component {
               }
             </Grid>
             }
-            <Separator bordered />
+            <Separator />
             <Text style={styles.header}>精選活動</Text>
             { paths && articles &&
             <ArticleList data={articles} navigation={this.props.navigation} />
@@ -198,7 +239,7 @@ export default class HomePageContainer extends React.Component {
               <Text>顯示更多</Text>
             </Button>
             </View>
-            <Separator bordered />
+            <Separator />
             <Text style={styles.header}>推介好去處</Text>
             { paths && places &&
             <PlaceList data={places} navigation={this.props.navigation} />

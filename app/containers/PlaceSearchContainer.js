@@ -1,7 +1,8 @@
 import React from 'react';
 import { AsyncStorage, StyleSheet, Image, View, ScrollView } from 'react-native';
-import { Container, Header, Left, Right, Item, Input, Icon, Body, Card, CardItem, Separator, Text, Button } from "native-base";
+import { Container, Header, Left, Right, Item, Input, Icon, Body, Card, CardItem, Text, Button } from "native-base";
 
+import Separator from "../components/Separator";
 import RecommendList from "../components/RecommendList";
 
 export default class PlaceSearchContainer extends React.Component {
@@ -125,8 +126,8 @@ export default class PlaceSearchContainer extends React.Component {
         </View>
         <ScrollView>
         <Card>
-          <Separator bordered />
-          <CardItem header>
+          <Separator />
+          <CardItem header style={{paddingBottom:0}}>
             <Text style={styles.header}>熱門搜尋</Text>
           </CardItem>
           <CardItem>
@@ -140,17 +141,19 @@ export default class PlaceSearchContainer extends React.Component {
             }
             </Body>
           </CardItem>
-          <Separator bordered />
-          <CardItem header>
+          <Separator />
+          <CardItem header style={{paddingBottom:0}}>
             <Text style={styles.header}>你可能想去</Text>
           </CardItem>
           <CardItem>
             <RecommendList places={places} navigation={this.props.navigation} />
           </CardItem>
-          <Separator bordered />
-          <CardItem header>
+          { recentSearches.length > 0 &&
+          <View>
+          <Separator />
+          <CardItem header style={{paddingBottom:0}}>
             <Text style={styles.header}>最近搜尋</Text>
-          </CardItem>
+          </CardItem> 
           <CardItem>
             <Body style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap'}}>
             {
@@ -162,6 +165,7 @@ export default class PlaceSearchContainer extends React.Component {
             }
             </Body>
           </CardItem>
+          </View> }
        </Card>
        </ScrollView>
       </Container>

@@ -1,15 +1,18 @@
 import * as React from "react";
-import { ActivityIndicator, AsyncStorage, Linking, StatusBar, Platform, View, StyleSheet, Image, ScrollView, Share, Dimensions } from 'react-native';
+import { TouchableOpacity, ActivityIndicator, AsyncStorage, Linking, StatusBar, Platform, View, StyleSheet, Image, ScrollView, Share, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
-import { Button, List, ListItem, Text, Icon, Left, Body, Right, Switch, H2, Card, CardItem, Separator, Thumbnail } from 'native-base';
+import { Button, List, ListItem, Text, Icon, Left, Body, Right, Switch, H2, Card, CardItem, Thumbnail } from 'native-base';
 import { SearchBar } from 'react-native-elements';
 import Slideshow from 'react-native-image-slider-show-razzium';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import HTML from 'react-native-render-html';
 import Modal, { ModalContent } from 'react-native-modals';
+import Separator from "../components/Separator";
 
 import ArticleList from "../components/ArticleList";
 import RecommendList from "../components/RecommendList";
+
+//const deviceWidth = Dimensions.get("window").width;
 
 export default class DetailPageContainer extends React.Component {
   constructor(props) {
@@ -104,10 +107,11 @@ export default class DetailPageContainer extends React.Component {
   }
 
   onShare = async () => {
+    const { type, data } = this.state;
     try {
       console.log("share");
       const result = await Share.share({
-        message: 'Birdle | This is a share test.',
+        message: data.title + "\nhttp://192.168.1.156/expo-redirect.html?type=" + type + "&id=" + data.id,
       });
 
       if (result.action === Share.sharedAction) {
@@ -238,7 +242,7 @@ export default class DetailPageContainer extends React.Component {
           color: 'grey'
         },
         {
-          title: tags.join("/"),
+          title: tags.join(" / "),
           icon: 'price-tag',
           type: 'Entypo',
           color: 'grey'
@@ -258,7 +262,7 @@ export default class DetailPageContainer extends React.Component {
         <ScrollView showsVerticalScrollIndicator={false}>
 
           { images.length > 0 &&
-            <Slideshow dataSource={images}/>
+            <Slideshow dataSource={images} arrowSize="0" indicatorColor="white" indicatorSelectedColor="#FEBB02" />
           }
             <Button transparent onPress={() => this.props.navigation.pop()}
               style={{position: 'absolute', left: 8, top: 25}} >
@@ -321,15 +325,20 @@ export default class DetailPageContainer extends React.Component {
               </View>
             </Col>
           </Grid>
-          <Separator bordered />
+          <Separator />
           <List>
             <ListItem icon noBorder style={{height:80}}>
               <Left style={styles.left}>
                 <Icon type='Entypo' name='location-pin' style={styles.icon} />
               </Left>
               <Body>
+              <TouchableOpacity onPress={() =>
+                    this.props.navigation.navigate("MapPage", {
+                      gps: data.gps, address: data.address,
+                  })}>
                 <Text>{data.address}</Text>
                 <Text note numberOfLines={1}>{data.transport_short}</Text>
+              </TouchableOpacity>
               </Body>
               <Right style={{ width:90 }}>
                 <Button transparent 
@@ -355,15 +364,16 @@ export default class DetailPageContainer extends React.Component {
               </Right>
             </ListItem>
           { list.map((item, i) => (
-            <ListItem icon key={i} noBorder>
-              <Left style={styles.left}>
-                { item.icon &&
-                <Icon type={item.type} name={item.icon} style={styles.icon} />
-                }
-              </Left>
-              <Body>
-                <Text style={{ color: item.color}}>{item.title ? item.title : "N/A"}</Text>
-              </Body>
+            <ListItem iconLeft key={i} noBorder>
+              { item.icon &&
+              <Icon type={item.type} name={item.icon} style={{color: '#7a5211', width: 50}} />
+              }
+              <Text onPress={() => 
+                item.icon == 'phone'? Linking.openURL(`tel:${data.telephone}`) : 
+                item.icon == 'mail-outline'? Linking.openURL(`mailto:${data.email}`) :
+                item.icon == 'link'? Linking.openURL(`${data.website}`) :
+                null} 
+              style={{ color: item.color}}>{item.title ? item.title : "N/A"}</Text>
             </ListItem>
             ))
           }

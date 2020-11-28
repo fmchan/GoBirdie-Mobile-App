@@ -6,6 +6,7 @@ import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
 
 import { Image, View, Text, ActivityIndicator } from 'react-native';
+//import * as Linking from 'expo-linking';
 import { Root } from "native-base";
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
@@ -57,21 +58,22 @@ let PlacePage = createStackNavigator({
   PlaceSearch: { screen: PlaceSearch, navigationOptions: {header: null} },
   PlaceAdvanceSearch: { screen: PlaceAdvanceSearch },
   PlaceResult: { screen: PlaceResult },
-  PlaceDetail: { screen: DetailPage, navigationOptions: {header: null} },
+  PlaceDetail: { screen: DetailPage, path: 'detail', navigationOptions: {header: null} },
   MapPage: { screen: MapPage }
 });
 let ArticlePage = createStackNavigator({
   ArticleListPage: { screen: ArticleListPage, navigationOptions: {header: null} },
   ArticleSearch: { screen: ArticleSearch, navigationOptions: {header: null} },
   ArticleResult: { screen: ArticleResult },
-  ArticleDetail: { screen: DetailPage, navigationOptions: {header: null} },
+  ArticleDetail: { screen: DetailPage, path: 'detail', navigationOptions: {header: null} },
   MapPage: { screen: MapPage }
 });
 let Home = createStackNavigator({
   HomePage: { screen: HomePage, navigationOptions: {header: null} },
   ArticleSearch: { screen: ArticleSearch, navigationOptions: {header: null} },
   ArticleResult: { screen: ArticleResult },
-  HighlightPage: { screen: HighlightPage }
+  HighlightPage: { screen: HighlightPage },
+  Detail: { screen: DetailPage, path: 'detail', navigationOptions: {header: null} },
 });
 let Menu = createStackNavigator({ 
   SettingPage: { screen: SettingPage, navigationOptions: {header: null} },
@@ -154,7 +156,7 @@ const RootPage = createAppContainer(createBottomTabNavigator({
   }
 }));
 
-
+//let redirectUrl = Linking.makeUrl('path/into/app', { hello: 'world', goodbye: 'now' });
 
 export default class App extends React.Component {
   constructor(props) {
@@ -215,6 +217,13 @@ export default class App extends React.Component {
     }
   };
 
+  /*urlRedirect(url) {
+      if(!url) return;
+      // parse and redirect to new url
+      let { path, queryParams } = Linking.parse(url);
+      console.log(`Linked to app with path: ${path} and data: ${JSON.stringify(queryParams)}`);
+      this.props.navigation.replace(path, queryParams);
+  }*/
   componentDidMount() {
     this.registerForPushNotificationsAsync();
 
@@ -226,6 +235,7 @@ export default class App extends React.Component {
     /*this._notificationSubscription = Notifications.addListener(
       this._handleNotification
     );*/
+    //Linking.getInitialURL().then(this.urlRedirect);
   }
 
   async componentWillMount() {

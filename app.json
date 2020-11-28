@@ -1,5 +1,6 @@
 {
   "expo": {
+    "scheme": "birdie",
     "name": "GoBirdie",
     "slug": "GoBirdie",
     "privacy": "public",
@@ -11,6 +12,9 @@
     "version": "2.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon-gobride.png",
+    "notification": {
+          "icon": "./assets/icon-gobride.png"
+    },
     "splash": {
       "image": "./assets/splash.jpg",
       "resizeMode": "contain",

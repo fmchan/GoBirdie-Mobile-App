@@ -1,7 +1,8 @@
 import React from 'react';
 import { AsyncStorage, StyleSheet, Image, View, ScrollView } from 'react-native';
-import { Container, Header, Left, Right, Item, Input, Icon, Body, Card, CardItem, Separator, Text, Button } from "native-base";
+import { Container, Header, Left, Right, Item, Input, Icon, Body, Card, CardItem, Text, Button } from "native-base";
 
+import Separator from "../components/Separator";
 import RecommendList from "../components/RecommendList";
 
 export default class ArticleSearchContainer extends React.Component {
@@ -122,7 +123,7 @@ export default class ArticleSearchContainer extends React.Component {
         </View>
         <ScrollView>
         <Card>
-          <Separator bordered />
+          <Separator />
           <CardItem header>
             <Text style={styles.header}>熱門搜尋</Text>
           </CardItem>
@@ -137,14 +138,14 @@ export default class ArticleSearchContainer extends React.Component {
             }
             </Body>
           </CardItem>
-          <Separator bordered />
+          <Separator />
           <CardItem header>
             <Text style={styles.header}>你可能想去</Text>
           </CardItem>
           <CardItem>
             <RecommendList places={places} navigation={this.props.navigation} />
           </CardItem>
-          <Separator bordered />
+          <Separator />
           <CardItem header>
             <Text style={styles.header}>最近搜尋</Text>
           </CardItem>
