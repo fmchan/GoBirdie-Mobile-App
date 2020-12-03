@@ -50,6 +50,7 @@ export default class ArticleList extends React.Component {
 	}
 
 	async _bookmark(field, i, bookmarked) {
+		var arr = [];
 		try {
 		  const value = await AsyncStorage.getItem('@birdie:bookmarks.'+field);
 		  if (value !== null) {

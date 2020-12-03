@@ -138,6 +138,7 @@ export default class DetailPageContainer extends React.Component {
   }
 
   async _bookmark(field, i, bookmarked, isId) {
+    var arr = [];
     try {
       const value = await AsyncStorage.getItem('@birdie:bookmarks.'+field);
       if (value !== null) {
@@ -170,9 +171,12 @@ export default class DetailPageContainer extends React.Component {
   };
 
   async _likeId(field, id, liked) {
+    console.log(field + "," + id + "," + liked);
+    var arr = [];
     try {
       const value = await AsyncStorage.getItem('@birdie:likes.'+field);
       if (value !== null) {
+        console.log("value:"+value);
         arr = JSON.parse(value);
       if(liked)
         arr.unshift(id);
@@ -181,6 +185,7 @@ export default class DetailPageContainer extends React.Component {
       } else if(liked) {
         arr = [id];
       }
+      console.log(JSON.stringify(arr));
       await AsyncStorage.setItem('@birdie:likes.'+field, JSON.stringify(arr));
     } catch (error) {
       console.error(error);
@@ -262,7 +267,7 @@ export default class DetailPageContainer extends React.Component {
         <ScrollView showsVerticalScrollIndicator={false}>
 
           { images.length > 0 &&
-            <Slideshow dataSource={images} arrowSize="0" indicatorColor="white" indicatorSelectedColor="#FEBB02" />
+            <Slideshow dataSource={images} arrowSize={0} indicatorColor="white" indicatorSelectedColor="#FEBB02" />
           }
             <Button transparent onPress={() => this.props.navigation.pop()}
               style={{position: 'absolute', left: 8, top: 25}} >

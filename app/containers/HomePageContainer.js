@@ -84,7 +84,8 @@ export default class HomePageContainer extends React.Component {
       // parse and redirect to new url
       let { path, queryParams } = Linking.parse(url);
       console.log(`Linked to app with path: ${path} and data: ${JSON.stringify(queryParams)}`);
-      this.navigateDetail(queryParams.type, queryParams.id);
+      if (path != null)
+        this.navigateDetail(queryParams.type, queryParams.id);
   }
 
   fetchHome() {

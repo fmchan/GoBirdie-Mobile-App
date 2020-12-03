@@ -11,7 +11,6 @@ import { Root } from "native-base";
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
-import Todo from "./app/containers/Todo";
 import MapPage from "./app/containers/MapPageContainer";
 import HomePage from "./app/containers/HomePageContainer";
 import SettingPage from "./app/containers/SettingPageContainer";
@@ -227,6 +226,13 @@ export default class App extends React.Component {
   componentDidMount() {
     this.registerForPushNotificationsAsync();
 
+    Font.loadAsync({
+      Roboto: require("native-base/Fonts/Roboto.ttf"),
+      Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
+      Ionicons: require("@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/Ionicons.ttf"),
+    });
+    this.setState({ loading: false });
+
     // Handle notifications that are received or selected while the app
     // is open. If the app was closed and then opened by tapping the
     // notification (rather than just tapping the app icon to open it),
@@ -236,15 +242,6 @@ export default class App extends React.Component {
       this._handleNotification
     );*/
     //Linking.getInitialURL().then(this.urlRedirect);
-  }
-
-  async componentWillMount() {
-    await Font.loadAsync({
-      Roboto: require("native-base/Fonts/Roboto.ttf"),
-      Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
-      Ionicons: require("@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/Ionicons.ttf"),
-    });
-    this.setState({ loading: false });
   }
 
   render() {
