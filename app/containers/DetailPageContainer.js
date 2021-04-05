@@ -28,16 +28,17 @@ export default class DetailPageContainer extends React.Component {
       data: null,
       images: [],
       tags: [],
-      image_path: param.item.image_path,
+      //image_path: param.item.image_path? param.item.image_path: null,
       shortData: param.item.data,
       bookmarked: param.item.bookmarked,
       liked: param.item.liked,
       modalTransport: false,
+      isShort: true,
     };
   }
 
   componentDidMount() {
-   this.fetchData(this.state.type, this.state.shortData.id, this.state.image_path);
+   this.fetchData(this.state.type, this.state.shortData.id);
    this.willFocusSubscription = this.props.navigation.addListener(
       'willFocus',
       () => {
@@ -51,7 +52,7 @@ export default class DetailPageContainer extends React.Component {
             data: null,
             images: [],
             tags: [],
-            image_path: param.item.image_path,
+            //image_path: param.item.image_path,
             shortData: param.item.data,
             bookmarked: param.item.bookmarked,
             liked: param.item.liked,
@@ -66,7 +67,7 @@ export default class DetailPageContainer extends React.Component {
   }
 
 
-  fetchData(type, id, image_path) {
+  fetchData(type, id) {
     var myHeaders = new Headers();
     myHeaders.append('Content-Type','text/plain; charset=UTF-8');
     fetch("https://gobirdie.hk/app/admin3s/api/"+(type == 'A'? 'articles': 'places')+"/"+id, myHeaders)
@@ -77,7 +78,7 @@ export default class DetailPageContainer extends React.Component {
           data = result.data;
           images = [];
           data.slides.forEach(function (el, index) {
-           var image = image_path + "/" + el;
+           var image = data.image_path + "/" + el;
            console.log(image);
            images.push({url:image});
           });
@@ -89,7 +90,9 @@ export default class DetailPageContainer extends React.Component {
             isLoaded: true,
             data: data,
             images: images,
-            tags: tags
+            image_path: data.image_path,
+            tags: tags,
+            isShort: (data.short != null)
           }, () => {
             if(type == 'P')
               this._setLikeById('place_ids', id);
@@ -111,7 +114,7 @@ export default class DetailPageContainer extends React.Component {
     try {
       console.log("share");
       const result = await Share.share({
-        message: data.title + "\nhttp://192.168.1.156/expo-redirect.html?type=" + type + "&id=" + data.id,
+        message: data.title + "\nhttps://gobirdie.hk/redirect.html?type=" + type + "&id=" + data.id,
       });
 
       if (result.action === Share.sharedAction) {
@@ -223,6 +226,11 @@ export default class DetailPageContainer extends React.Component {
     );
   }
 
+  switchContent() {
+    this.setState({
+      isShort: !this.state.isShort
+    });
+  }
   render() {
     if (!this.state.isLoaded) {
       return <ActivityIndicator />;
@@ -232,7 +240,8 @@ export default class DetailPageContainer extends React.Component {
         {
           title: data.telephone,
           icon: 'phone',
-          type: 'Entypo'
+          type: 'Entypo',
+          color: '#3b3b3b'
         },
         {
           title: data.opening,
@@ -255,12 +264,14 @@ export default class DetailPageContainer extends React.Component {
         {
           title: data.email,
           icon: 'mail-outline',
-          type: 'MaterialIcons'
+          type: 'MaterialIcons',
+          color: '#3b3b3b'
         },
         {
           title: data.website,
           icon: 'link',
-          type: 'Entypo'
+          type: 'Entypo',
+          color: '#3b3b3b'
         },
       ];
       return (
@@ -342,7 +353,7 @@ export default class DetailPageContainer extends React.Component {
                       gps: data.gps, address: data.address,
                   })}>
                 <Text>{data.address}</Text>
-                <Text note numberOfLines={1}>{data.transport_short}</Text>
+                {data.transport_short && <Text note numberOfLines={1}>{data.transport_short}</Text>}
               </TouchableOpacity>
               </Body>
               <Right style={{ width:90 }}>
@@ -354,7 +365,7 @@ export default class DetailPageContainer extends React.Component {
                 style={{ marginTop:15, flex: 1, flexDirection: 'column', alignItems: 'center' }}>
                    <Image style={{ width:70, height:70 }} 
                 source={require('../../assets/details/traffic.png')} />
-                    <Text style={{ width:85, fontSize:12 }} >交通資訊</Text>
+                    <Text style={{ width:85, fontSize:12, color:'#3b3b3b' }} >交通資訊</Text>
                 </Button>
                 <Modal
                   visible={this.state.modalTransport}
@@ -386,16 +397,18 @@ export default class DetailPageContainer extends React.Component {
 
           <Card>
             <CardItem header>
-              <Text style={styles.icon}>介紹</Text>
+              <Text style={styles.header2}>介紹</Text>
             </CardItem>
             <CardItem>
-            <HTML html={data.content} tagsStyles={ {p: { fontSize: 20, lineHeight: 28 }} } imagesMaxWidth={Dimensions.get('window').width - 40} />
+            {this.state.isShort && <HTML html={data.short} tagsStyles={ {p: { fontSize: 20, lineHeight: 28 }} } imagesMaxWidth={Dimensions.get('window').width - 40} />}
+            {!this.state.isShort && <HTML html={data.content} tagsStyles={ {p: { fontSize: 20, lineHeight: 28 }} } imagesMaxWidth={Dimensions.get('window').width - 40} />}
             </CardItem>
-            {/*<CardItem footer>
-              <Button bordered rounded style={{width: '100%', justifyContent:'center', alignItems:'center'}}>
+            {data.short != null && <CardItem footer>
+              <Button bordered rounded style={{width: '100%', justifyContent:'center', alignItems:'center'}}
+              onPress={() => this.switchContent()}>
                 <Text>顯示更多</Text>
               </Button>
-            </CardItem>*/}
+            </CardItem>}
          </Card>
 
          { data.articles.length > 0 && <Text style={styles.header}>相關活動</Text> }
@@ -417,7 +430,9 @@ export default class DetailPageContainer extends React.Component {
 }
 
 const styles: any = StyleSheet.create({
-  left: { width: 50 },
+  left: {
+    width: 50,
+  },
   icon: {
     color: '#7a5211'
   },
@@ -432,6 +447,12 @@ const styles: any = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 20,
     paddingHorizontal: 18,
+    paddingTop: 10,
+  },
+  header2: {
+    color: '#7d5114',
+    fontWeight: 'bold',
+    fontSize: 20,
     paddingTop: 10,
   },
 });

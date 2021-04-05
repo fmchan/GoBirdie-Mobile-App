@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Slider, ScrollView, Dimensions, AsyncStorage, ActivityIndicator, StyleSheet, Image, View } from 'react-native';
-import { Button, Icon, Accordion, Container, Left, Body, Right, Separator, Header, Content, List, ListItem, Text, Radio } from 'native-base';
+import { Button, Icon, Accordion, Container, Left, Body, Right, Separator, Header, Content, List, ListItem, Text, CheckBox, Radio } from 'native-base';
 
 const win = Dimensions.get('window');
 
@@ -16,7 +16,7 @@ export default class PlaceAdvanceSearchContainer extends React.Component {
       isLoaded: true,
       path_facilities: null,
       facilities: [],
-      facilityId: null,
+      facilityIds: [],
       organizations: [],
       organizationId: null,
       accordions: []
@@ -88,7 +88,7 @@ export default class PlaceAdvanceSearchContainer extends React.Component {
             accordions: [
               { title: "地區", content: result.data.districts, selected:null },
               { title: "時間", content: result.data.hours, selected:null },
-              { title: "空間", content: result.data.areas, selected:null }
+              { title: "室內/戶外", content: result.data.areas, selected:null }
             ],
           }, () => {
           console.log(this.state.districts);
@@ -124,7 +124,7 @@ export default class PlaceAdvanceSearchContainer extends React.Component {
 
   static navigationOptions = ({ navigation }) => {
     return {
-      title: navigation.getParam('title', '篩選'),
+      title: navigation.getParam('title', '進階搜尋'),
     };
   };
 
@@ -135,10 +135,17 @@ export default class PlaceAdvanceSearchContainer extends React.Component {
   }
 
   _facilityChange(id) {
+    var facilityIds = this.state.facilityIds;
+    var newFacilityIds = [];
+    if (facilityIds.includes(id)) {
+      facilityIds.splice(facilityIds.indexOf(id), 1);
+      newFacilityIds = facilityIds;
+    } else
+      newFacilityIds = facilityIds.concat(id);
     this.setState({
-      facilityId: id,
+      facilityIds: newFacilityIds,
     });
-    console.log(id);
+    console.log(newFacilityIds);
   }
   _organizationChange(id) {
     this.setState({
@@ -185,7 +192,7 @@ export default class PlaceAdvanceSearchContainer extends React.Component {
       {field: "district", value: arr[0].selected},
       {field: "opening_hours", value: arr[1].selected},
       {field: "area", value: arr[2].selected},
-      {field: "facilities", value: this.state.facilityId},
+      {field: "facilities", value: this.state.facilityIds},
       {field: "organization", value: this.state.organizationId},
     ];
 
@@ -219,7 +226,7 @@ export default class PlaceAdvanceSearchContainer extends React.Component {
               facilities.length > 0 && facilities.map((item, key) => {
                 //console.log('uri: ' + this.state.path_facilities+item.icon);
                 return (
-                  <ListItem key={item.id} selected={this.state.facilityId == item.id}
+                  <ListItem key={item.id} selected={this.state.facilityIds.includes(item.id)}
                   onPress={() => this._facilityChange(item.id)}>
                     <Left>
                       <Image style={{ width:35, height:40, marginRight:15 }}
@@ -231,8 +238,8 @@ export default class PlaceAdvanceSearchContainer extends React.Component {
                     </Left>
 
                     <Right>
-                      <Radio
-                        selected={this.state.facilityId == item.id}
+                      <CheckBox
+                        checked={this.state.facilityIds.includes(item.id)}
                         onPress={() => this._facilityChange(item.id)}
                         color={"#999"}
                         selectedColor={"#F4B815"}
@@ -254,8 +261,8 @@ export default class PlaceAdvanceSearchContainer extends React.Component {
                       <Text>{item.name}</Text>
                     </Left>
                     <Right>
-                      <Radio
-                        selected={this.state.organizationId == item.id}
+                      <CheckBox
+                        checked={this.state.organizationId == item.id}
                         onPress={() => this._organizationChange(item.id)}
                         color={"#999"}
                         selectedColor={"#F4B815"}

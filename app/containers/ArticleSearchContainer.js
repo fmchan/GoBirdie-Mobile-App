@@ -127,7 +127,7 @@ export default class ArticleSearchContainer extends React.Component {
           <CardItem header>
             <Text style={styles.header}>熱門搜尋</Text>
           </CardItem>
-          <CardItem>
+          <CardItem bordered>
             <Body style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap'}}>
             {
               hotKeywords.map((item, key) => {
@@ -138,14 +138,12 @@ export default class ArticleSearchContainer extends React.Component {
             }
             </Body>
           </CardItem>
-          <Separator />
           <CardItem header>
             <Text style={styles.header}>你可能想去</Text>
           </CardItem>
-          <CardItem>
+          <CardItem bordered>
             <RecommendList places={places} navigation={this.props.navigation} />
           </CardItem>
-          <Separator />
           <CardItem header>
             <Text style={styles.header}>最近搜尋</Text>
           </CardItem>

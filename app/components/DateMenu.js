@@ -88,6 +88,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     borderRadius:15,
+    color: "black",
   },
   filterLabel: {
     padding: 5,

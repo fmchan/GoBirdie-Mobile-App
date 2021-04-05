@@ -38,8 +38,9 @@ export default class PlaceResultContainer extends React.Component {
         if(a.value != null)
           params += "&" + a.field + "=" + a.value;
       });
-    console.log('?'+params.substr(1));
-    fetch("https://gobirdie.hk/app/admin3s/api/places?" + params.substr(1))
+    //params = params != null? params.substr(1): '';
+    console.log('?'+params);
+    fetch("https://gobirdie.hk/app/admin3s/api/places?" + params)
       .then(res => res.json())
       .then(
         (result) => {

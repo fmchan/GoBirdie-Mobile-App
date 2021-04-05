@@ -114,6 +114,7 @@ export default class PlaceSearchContainer extends React.Component {
           </Left>
           <Right>
             <Button transparent onPress={() => this.props.navigation.navigate("PlaceAdvanceSearch")}>
+              <Icon style={{color:"#7d5114", fontSize: 20}} type="Ionicons" name="options" />
               <Text style={{color:'#7d5114', fontWeight: 'bold', fontSize: 16}}>進階搜尋</Text>
             </Button>
           </Right>
@@ -130,7 +131,7 @@ export default class PlaceSearchContainer extends React.Component {
           <CardItem header style={{paddingBottom:0}}>
             <Text style={styles.header}>熱門搜尋</Text>
           </CardItem>
-          <CardItem>
+          <CardItem bordered>
             <Body style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap'}}>
             {
               hotKeywords.map((item, key) => {
@@ -141,16 +142,14 @@ export default class PlaceSearchContainer extends React.Component {
             }
             </Body>
           </CardItem>
-          <Separator />
           <CardItem header style={{paddingBottom:0}}>
             <Text style={styles.header}>你可能想去</Text>
           </CardItem>
-          <CardItem>
+          <CardItem bordered>
             <RecommendList places={places} navigation={this.props.navigation} />
           </CardItem>
           { recentSearches.length > 0 &&
           <View>
-          <Separator />
           <CardItem header style={{paddingBottom:0}}>
             <Text style={styles.header}>最近搜尋</Text>
           </CardItem> 

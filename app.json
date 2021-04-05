@@ -2,14 +2,14 @@
   "expo": {
     "scheme": "birdie",
     "name": "GoBirdie",
-    "slug": "GoBirdie",
+    "slug": "Go-birdie",
     "privacy": "public",
     "platforms": [
       "ios",
       "android",
       "web"
     ],
-    "version": "2.0.0",
+    "version": "2.0.3",
     "orientation": "portrait",
     "icon": "./assets/icon-gobride.png",
     "notification": {
@@ -21,11 +21,30 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "splash": {
+      "image": "./assets/gobirdie-splash.png",
+      "backgroundColor": "#F7F7F7"
+    },
     "ios": {
-      "bundleIdentifier": "com.fmchan.gobirdie"
+      "bundleIdentifier": "com.gobirdie.gobirdie",
+      "buildNumber": "2.0.3"
     },
     "android": {
-      "package": "com.fmchan.gobirdie"
+      "package": "com.gobirdie.gobirdie",
+      "permissions": [],
+      "versionCode": 2,
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "data": [{
+            "scheme": "birdie"
+          }],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        }
+      ]
     }
   }
 }

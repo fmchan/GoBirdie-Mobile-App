@@ -23,6 +23,7 @@ export default class HomePageContainer extends React.Component {
       categories2D: [],
       paths: null,
     };
+    this.urlRedirect = this.urlRedirect.bind(this);
     //console.log('Height on: ', Platform.OS, StatusBar.currentHeight);
   }
 
@@ -68,11 +69,11 @@ export default class HomePageContainer extends React.Component {
   navigateDetail(type, link) {
     if(type == 'A') {
       this.props.navigation.navigate("ArticleDetail", {
-        item: {type: 'A', data: {id: link}, image_path: this.state.paths.articles, bookmarked: false, liked: false}
+        item: {type: 'A', data: {id: link}, bookmarked: false, liked: false}
       })
     } else if(type == 'P') {
       this.props.navigation.navigate("PlaceDetail", {
-        item: {type: 'P', data: {id: link}, image_path: this.state.paths.places, bookmarked: false, liked: false}
+        item: {type: 'P', data: {id: link}, bookmarked: false, liked: false}
       })
     } else if(type == 'E') {
       Linking.openURL(link);
@@ -160,11 +161,11 @@ export default class HomePageContainer extends React.Component {
         <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
           <View style={styles.container}>
             <View style={{margin:15}}>
-              <Item searchBar rounded style={{backgroundColor:"#E3EBEE", padding:15}}
+              <Item searchBar rounded style={{backgroundColor:"#ededed", padding:15}}
               onPress={() => this.props.navigation.navigate("PlaceSearch")}>
-                <Icon name="ios-search" style={{color:"#aaa"}} />
+                <Icon name="ios-search" style={{color:"black"}} />
                 <TouchableOpacity onPress={() => this.props.navigation.navigate("PlaceSearch")}>
-                <Input placeholderTextColor="#aaa" placeholder="搜尋好去處" editable={false} />
+                <Input placeholder="搜尋好去處" editable={false} />
                 </TouchableOpacity>
               </Item>
             </View>
