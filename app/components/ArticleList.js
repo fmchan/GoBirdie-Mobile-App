@@ -16,7 +16,6 @@ export default class ArticleList extends React.Component {
     	this._retrieveBookmarkArticleIds();
     	this._retrieveLikeArticleIds();
     }
-
   _retrievePath = async () => {
     try {
       const value = await AsyncStorage.getItem('@birdie:paths');
@@ -34,7 +33,9 @@ export default class ArticleList extends React.Component {
 		  if (value !== null) {
 		    this.setState({
 		    	bookmark_article_ids:JSON.parse(value),
-		    });
+		    }, () => {
+				console.log(this.state.bookmark_article_ids);
+	    	});
 		  }
 		} catch (error) {
 		  console.error(error);

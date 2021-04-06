@@ -22,14 +22,27 @@ export default class ArticleListContainer extends React.Component {
       chosenDate: null,
     };
     this.setDate = this.setDate.bind(this);
+    this._list = React.createRef();
     console.log('Height on: ', Platform.OS, StatusBar.currentHeight);
   }
 
   componentDidMount() {
    this.fetchArticles();
    this.fetchCategories();
-  }
+   console.log('componentDidMount');
 
+   this.willFocusSubscription = this.props.navigation.addListener(
+      'willFocus',
+      () => {
+        console.log('willFocusSubscription');
+        if (this._list != null && this._list.current != null)
+          this._list.current._retrieveBookmarkArticleIds();
+      }
+   );
+  }
+  componentWillUnmount() {
+    this.willFocusSubscription.remove();
+  }
   fetchArticles() {
     var { currentFilter, currentPage, search, chosenDate } = this.state;
 
@@ -145,7 +158,7 @@ export default class ArticleListContainer extends React.Component {
           <DateMenu currentFilter={this.state.currentFilter} onFilterPress={this.onFilterPress} setDate={this.setDate} onRef={ref => (this.dateMenu = ref)} />
 
           { articles.length > 0 &&
-          <ArticleList data={articles} navigation={this.props.navigation} />
+          <ArticleList data={articles} navigation={this.props.navigation} ref={this._list} />
           }
           </View>
         </SafeAreaView>

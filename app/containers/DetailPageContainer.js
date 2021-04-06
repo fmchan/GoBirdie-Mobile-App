@@ -54,7 +54,7 @@ export default class DetailPageContainer extends React.Component {
             tags: [],
             //image_path: param.item.image_path,
             shortData: param.item.data,
-            bookmarked: param.item.bookmarked,
+            //bookmarked: param.item.bookmarked,
             liked: param.item.liked,
           }, () => {
             this.fetchData(this.state.type, this.state.shortData.id, this.state.image_path);
@@ -132,7 +132,7 @@ export default class DetailPageContainer extends React.Component {
   };
 
   _bookmarkButton(type, data, bookmarked) {
-    console.log(bookmarked);
+    console.log('going to change to ' + bookmarked);
     this._bookmark(type == 'A'? 'articles': 'places', data, bookmarked, false);
     this._bookmark(type == 'A'? 'article_ids': 'place_ids', data.id, bookmarked, true);
     this.setState({
@@ -146,14 +146,16 @@ export default class DetailPageContainer extends React.Component {
       const value = await AsyncStorage.getItem('@birdie:bookmarks.'+field);
       if (value !== null) {
         arr = JSON.parse(value);
-        if(!bookmarked)
+        console.log('orignal: ' + JSON.stringify(arr) + ', bookmarked: '+ bookmarked);
+        console.log('i? ' + i);
+        if(bookmarked)
           arr.unshift(i);
-        else
+        else 
           arr = isId? arr.filter(e => e !== i): arr.filter(e => e.id !== i.id);
       } else if(bookmarked) {
         arr = [i];
       }
-      console.log('arr: ' + JSON.stringify(arr));
+      console.log('new: ' + JSON.stringify(arr));
       await AsyncStorage.setItem('@birdie:bookmarks.'+field, JSON.stringify(arr));
     } catch (error) {
       console.error(error);
