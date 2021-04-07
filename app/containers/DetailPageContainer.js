@@ -30,8 +30,8 @@ export default class DetailPageContainer extends React.Component {
       tags: [],
       //image_path: param.item.image_path? param.item.image_path: null,
       shortData: param.item.data,
-      bookmarked: param.item.bookmarked,
-      liked: param.item.liked,
+      //bookmarked: param.item.bookmarked,
+      //liked: param.item.liked,
       modalTransport: false,
       isShort: true,
     };
@@ -44,7 +44,8 @@ export default class DetailPageContainer extends React.Component {
       () => {
         param = this.props.navigation.state.params;
         console.log(param);
-        if(param.item.id != this.state.shortData.id)
+        if(param.item.id != undefined && param.item.id != this.state.shortData.id) {
+          console.log('param.item.id '+param.item.id+' != this.state.shortData.id '+ this.state.shortData.id);
           this.setState({
             error: null,
             isLoaded: false,
@@ -55,10 +56,13 @@ export default class DetailPageContainer extends React.Component {
             //image_path: param.item.image_path,
             shortData: param.item.data,
             //bookmarked: param.item.bookmarked,
-            liked: param.item.liked,
+            //liked: param.item.liked,
           }, () => {
             this.fetchData(this.state.type, this.state.shortData.id, this.state.image_path);
           });
+        }
+        this.checkBookmark();
+        this.checkLike();
       }
     );
   }
@@ -74,12 +78,13 @@ export default class DetailPageContainer extends React.Component {
       .then(result => result.json())
       .then(
         (result) => {
-          console.log(result);
+          //console.log(result);
           data = result.data;
+          console.log('fetched detail page for type:'+type+' ,id:'+data.id);
           images = [];
           data.slides.forEach(function (el, index) {
            var image = data.image_path + "/" + el;
-           console.log(image);
+           //console.log(image);
            images.push({url:image});
           });
           tags = [];
@@ -93,9 +98,6 @@ export default class DetailPageContainer extends React.Component {
             image_path: data.image_path,
             tags: tags,
             isShort: (data.short != null)
-          }, () => {
-            if(type == 'P')
-              this._setLikeById('place_ids', id);
           });
           //console.log(this.state.data);
           //console.log(this.state.images);
@@ -140,6 +142,18 @@ export default class DetailPageContainer extends React.Component {
     });
   }
 
+  async checkBookmark() {
+    try {
+      const value = await AsyncStorage.getItem('@birdie:bookmarks.'+(this.state.type == 'A'? 'article_ids': 'place_ids'));
+      if (value !== null) {
+        this.setState({
+          bookmarked:JSON.parse(value).includes(this.state.shortData.id),
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
   async _bookmark(field, i, bookmarked, isId) {
     var arr = [];
     try {
@@ -149,11 +163,11 @@ export default class DetailPageContainer extends React.Component {
         console.log('orignal: ' + JSON.stringify(arr) + ', bookmarked: '+ bookmarked);
         console.log('i? ' + i);
         if(bookmarked)
-          arr.unshift(i);
+          arr.unshift(i); //add
         else 
-          arr = isId? arr.filter(e => e !== i): arr.filter(e => e.id !== i.id);
+          arr = isId? arr.filter(e => e !== i): arr.filter(e => e.id !== i.id); //remove
       } else if(bookmarked) {
-        arr = [i];
+        arr = [i]; //add
       }
       console.log('new: ' + JSON.stringify(arr));
       await AsyncStorage.setItem('@birdie:bookmarks.'+field, JSON.stringify(arr));
@@ -162,12 +176,12 @@ export default class DetailPageContainer extends React.Component {
     }
   };
 
-  async _setLikeById(field, id) {
+  async checkLike() {
     try {
-      const value = await AsyncStorage.getItem('@birdie:likes.'+field);
+      const value = await AsyncStorage.getItem('@birdie:likes.'+(this.state.type == 'A'? 'article_ids': 'place_ids'));
       if (value !== null) {
         this.setState({
-          liked:JSON.parse(value).includes(this.state.data.id),
+          liked:JSON.parse(value).includes(this.state.shortData.id),
         });
       }
     } catch (error) {

@@ -165,7 +165,7 @@ export default class ArticleList extends React.Component {
 	<TouchableOpacity
 		   onPress={() =>
 		    this.props.navigation.navigate("ArticleDetail", {
-		      item: {type: 'A', data: item, image_path: this.state.path_articles, bookmarked: item.bookmarked, liked: item.liked}
+		      item: {type: 'A', data: item, image_path: this.state.path_articles}
 		    })}>
 	<Image
 	      style={{borderRadius: 8, width: deviceWidth/2 - 24, height: deviceWidth/2 * 9/16}}

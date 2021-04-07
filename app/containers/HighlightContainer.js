@@ -9,7 +9,7 @@ export default class HighlightContainer extends React.Component {
 
     const param = this.props.navigation.state.params;
     //console.log(param.gps);
-
+    this._list = React.createRef();
 	this.state = {
       error: null,
       isLoaded: false,
@@ -26,8 +26,26 @@ export default class HighlightContainer extends React.Component {
 
   componentDidMount() {
     this.fetchData();
-  }
 
+     this.willFocusSubscription = this.props.navigation.addListener(
+        'willFocus',
+        () => {
+          console.log('willFocusSubscription');
+          if (this._list != null && this._list.current != null) {
+            if (this.state.type == 'A') {
+              this._list.current._retrieveBookmarkArticleIds();
+              this._list.current._retrieveLikeArticleIds();
+            } else
+              this._list.current._retrieveBookmarkPlaceIds();
+          }
+        }
+     );
+
+
+  }
+  componentWillUnmount() {
+    this.willFocusSubscription.remove();
+  }
   fetchData() {
     fetch("https://gobirdie.hk/app/admin3s/api/" + (this.state.type == 'A'? 'highlight_articles': 'highlight_places'),
     {
@@ -63,10 +81,10 @@ export default class HighlightContainer extends React.Component {
     return (
       <View>
       { type == 'P' && data.length > 0 &&
-      <PlaceList data={data} navigation={this.props.navigation} />
+      <PlaceList data={data} navigation={this.props.navigation} ref={this._list} />
       }
       { type == 'A' && data.length > 0 &&
-      <ArticleList data={data} navigation={this.props.navigation} />
+      <ArticleList data={data} navigation={this.props.navigation} ref={this._list} />
       }
       </View>
     );

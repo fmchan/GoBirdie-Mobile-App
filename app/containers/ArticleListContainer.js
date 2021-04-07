@@ -35,8 +35,10 @@ export default class ArticleListContainer extends React.Component {
       'willFocus',
       () => {
         console.log('willFocusSubscription');
-        if (this._list != null && this._list.current != null)
+        if (this._list != null && this._list.current != null) {
           this._list.current._retrieveBookmarkArticleIds();
+          this._list.current._retrieveLikeArticleIds();
+        }
       }
    );
   }

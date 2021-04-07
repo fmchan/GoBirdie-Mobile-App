@@ -19,6 +19,7 @@ export default class PlaceListContainer extends React.Component {
       categories: [],
     };
     console.log('Height on: ', Platform.OS, StatusBar.currentHeight);
+    this._list = React.createRef();
   }
 
   componentDidMount() {
@@ -34,6 +35,9 @@ export default class PlaceListContainer extends React.Component {
         }, () => {
          this.fetchPlaces();
         });
+        console.log('willFocusSubscription');
+        if (this._list != null && this._list.current != null)
+          this._list.current._retrieveBookmarkPlaceIds();
       }
     );
   }
@@ -117,7 +121,7 @@ export default class PlaceListContainer extends React.Component {
           </View>
           <CategoryMenu categories={categories} currentPage={this.state.currentPage} onMenuPress={this.onMenuPress}/>
           { articles.length > 0 &&
-          <PlaceList data={articles} navigation={this.props.navigation} />
+          <PlaceList data={articles} navigation={this.props.navigation} ref={this._list} />
           }
           </View>
         </SafeAreaView>

@@ -24,6 +24,8 @@ export default class HomePageContainer extends React.Component {
       paths: null,
     };
     this.urlRedirect = this.urlRedirect.bind(this);
+    this._listA = React.createRef();
+    this._listP = React.createRef();
     //console.log('Height on: ', Platform.OS, StatusBar.currentHeight);
   }
 
@@ -40,8 +42,24 @@ export default class HomePageContainer extends React.Component {
     Linking.addEventListener('url', event => {
         this.urlRedirect(event.url);
     });
-  }
 
+   this.willFocusSubscription = this.props.navigation.addListener(
+      'willFocus',
+      () => {
+        console.log('willFocusSubscription');
+        if (this._listA != null && this._listA.current != null) {
+          this._listA.current._retrieveBookmarkArticleIds();
+          this._listA.current._retrieveLikeArticleIds();
+        }
+        if (this._listP != null && this._listP.current != null)
+          this._listP.current._retrieveBookmarkPlaceIds();
+      }
+   );
+
+  }
+  componentWillUnmount() {
+    this.willFocusSubscription.remove();
+  }
   _handleNotification = notification => {
     Vibration.vibrate()
     this.setState({ notification: notification }, () => {
@@ -229,7 +247,7 @@ export default class HomePageContainer extends React.Component {
             <Separator />
             <Text style={styles.header}>精選活動</Text>
             { paths && articles &&
-            <ArticleList data={articles} navigation={this.props.navigation} />
+            <ArticleList data={articles} navigation={this.props.navigation} ref={this._listA} />
             }
             <View style={{ paddingHorizontal:15, paddingBottom:15 }}>
             <Button bordered rounded style={{ width: '100%', justifyContent:'center', alignItems:'center'}}
@@ -244,7 +262,7 @@ export default class HomePageContainer extends React.Component {
             <Separator />
             <Text style={styles.header}>推介好去處</Text>
             { paths && places &&
-            <PlaceList data={places} navigation={this.props.navigation} />
+            <PlaceList data={places} navigation={this.props.navigation} ref={this._listP} />
             }
             <View style={{ padding:15 }}>
             <Button bordered rounded style={{ width: '100%', justifyContent:'center', alignItems:'center'}}

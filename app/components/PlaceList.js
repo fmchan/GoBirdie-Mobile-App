@@ -24,7 +24,7 @@ export default class PlaceList extends React.Component {
 			bookmark_place_ids:[],
 		};
 		this._retrievePath();
-		this._retrievePlaceIds();
+		this._retrieveBookmarkPlaceIds();
 		//console.log(this.state.path_facilities);
 	}
 	getCatNames(cats) {
@@ -49,7 +49,7 @@ export default class PlaceList extends React.Component {
 		  console.error(error);
 		}
 	};
-	_retrievePlaceIds = async () => {
+	_retrieveBookmarkPlaceIds = async () => {
 		try {
 		  const value = await AsyncStorage.getItem('@birdie:bookmarks.place_ids');
 		  if (value !== null) {
@@ -114,7 +114,7 @@ export default class PlaceList extends React.Component {
 	return (
 	<TouchableOpacity onPress={() =>
 		    this.props.navigation.navigate("PlaceDetail", {
-		   	  item: {type: 'P', data: item, image_path: this.state.path_places, bookmarked: item.bookmarked}
+		   	  item: {type: 'P', data: item, image_path: this.state.path_places}
 		    })
 		  }>
 	<View style={{ paddingVertical: 20, paddingHorizontal: 18, borderBottomColor: '#ccc', borderBottomWidth: 1 }}>
