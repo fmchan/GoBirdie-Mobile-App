@@ -9,7 +9,7 @@
       "android",
       "web"
     ],
-    "version": "2.0.3",
+    "version": "2.0.4",
     "orientation": "portrait",
     "icon": "./assets/icon-gobride.png",
     "notification": {
@@ -27,7 +27,7 @@
     },
     "ios": {
       "bundleIdentifier": "com.gobirdie.gobirdie",
-      "buildNumber": "2.0.3"
+      "buildNumber": "2.0.4"
     },
     "android": {
       "package": "com.gobirdie.gobirdie",
