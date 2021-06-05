@@ -9,7 +9,7 @@
       "android",
       "web"
     ],
-    "version": "2.0.4",
+    "version": "2.0.6",
     "orientation": "portrait",
     "icon": "./assets/icon-gobride.png",
     "notification": {
@@ -27,12 +27,22 @@
     },
     "ios": {
       "bundleIdentifier": "com.gobirdie.gobirdie",
-      "buildNumber": "2.0.4"
+      "buildNumber": "2.0.6",
+      "config": {
+        "googleMapsApiKey": "AIzaSyDOC2AimvNF2jev5HchXjECmb2x-nZe-tU"
+      }
     },
     "android": {
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyDjTcHVnX5j5TItoKxmuwi6NBI23f9srx0"
+        }
+      },
+      "googleServicesFile": "./google-services.json",
+      "useNextNotificationsApi": true,
       "package": "com.gobirdie.gobirdie",
       "permissions": [],
-      "versionCode": 2,
+      "versionCode": 4,
       "intentFilters": [
         {
           "action": "VIEW",

@@ -28,6 +28,7 @@ export default class DetailPageContainer extends React.Component {
       data: null,
       images: [],
       tags: [],
+      icons: [],
       //image_path: param.item.image_path? param.item.image_path: null,
       shortData: param.item.data,
       //bookmarked: param.item.bookmarked,
@@ -91,12 +92,17 @@ export default class DetailPageContainer extends React.Component {
           data.tags.forEach(function (el, index) {
            tags.push(el.name);
           });
+          var icons = [], iconRowSize = 4;
+          while (data.icons.length > 0)
+            icons.push(data.icons.splice(0, iconRowSize));
+
           this.setState({
             isLoaded: true,
             data: data,
             images: images,
             image_path: data.image_path,
             tags: tags,
+            icons: icons,
             isShort: (data.short != null)
           });
           //console.log(this.state.data);
@@ -251,7 +257,7 @@ export default class DetailPageContainer extends React.Component {
     if (!this.state.isLoaded) {
       return <ActivityIndicator />;
     } else {
-      const { type, shortData, data, images, tags, bookmarked, liked } = this.state;
+      const { type, shortData, data, images, tags, icons, bookmarked, liked } = this.state;
       const list = [
         {
           title: data.telephone,
@@ -316,9 +322,7 @@ export default class DetailPageContainer extends React.Component {
             </Col>
             <Col style={{ height: 80 }}
                   onPress={() =>
-                    this.props.navigation.navigate("MapPage", {
-                      gps: data.gps, address: data.address,
-                  })}>
+                    Linking.openURL("https://www.google.com/maps/search/?api=1&query="+data.gps) }>
               <View style={{ flex: 1, justifyContent:'center', alignItems:'center' }}>
               <Image style={{ width:50, flex: 1 }} resizeMode="contain"
                 source={require('../../assets/details/location.png')} />
@@ -395,7 +399,7 @@ export default class DetailPageContainer extends React.Component {
                 </Modal>
               </Right>
             </ListItem>
-          { list.map((item, i) => (
+          { list.map((item, i) => { if(item.title) return (
             <ListItem iconLeft key={i} noBorder>
               { item.icon &&
               <Icon type={item.type} name={item.icon} style={{color: '#7a5211', width: 50}} />
@@ -405,11 +409,29 @@ export default class DetailPageContainer extends React.Component {
                 item.icon == 'mail-outline'? Linking.openURL(`mailto:${data.email}`) :
                 item.icon == 'link'? Linking.openURL(`${data.website}`) :
                 null} 
-              style={{ color: item.color}}>{item.title ? item.title : "N/A"}</Text>
+              style={{ color: item.color}}>{item.title}</Text>
             </ListItem>
-            ))
+            )}
+            )
           }
           </List>
+
+          <Grid style={{paddingBottom:10}}>
+          { icons.map((row, i) => (
+            <Row>
+            { row.map((item, j) => (
+            <Col style={{ height: 80 }}>
+              <View style={{ flex: 1, justifyContent:'center', alignItems:'center' }}>
+              <Image style={{ width:50, flex: 1 }} resizeMode="contain"
+                source={{ uri: data.facility_path+item.icon }} />
+              <Text style={{ fontSize: 18, textAlign: 'center' }}>{ item.name }</Text>
+              </View>
+            </Col>
+            ))}
+            </Row>
+            )
+          )}
+          </Grid>
 
           <Card>
             <CardItem header>
@@ -420,9 +442,10 @@ export default class DetailPageContainer extends React.Component {
             {!this.state.isShort && <HTML html={data.content} tagsStyles={ {p: { fontSize: 20, lineHeight: 28 }} } imagesMaxWidth={Dimensions.get('window').width - 40} />}
             </CardItem>
             {data.short != null && <CardItem footer>
-              <Button bordered rounded style={{width: '100%', justifyContent:'center', alignItems:'center'}}
+              <Button bordered rounded style={{width: '100%', justifyContent:'center', alignItems:'center', borderColor: '#aaa'}}
               onPress={() => this.switchContent()}>
-                <Text>顯示更多</Text>
+                {this.state.isShort && <Text style={styles.button}>顯示更多</Text>}
+                {!this.state.isShort && <Text style={styles.button}>收起顯示更多</Text>}
               </Button>
             </CardItem>}
          </Card>
@@ -448,6 +471,9 @@ export default class DetailPageContainer extends React.Component {
 const styles: any = StyleSheet.create({
   left: {
     width: 50,
+  },
+  button: {
+    width: '100%', textAlign: 'center', color: '#aaa'
   },
   icon: {
     color: '#7a5211'

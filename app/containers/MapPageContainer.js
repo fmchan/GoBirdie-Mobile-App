@@ -35,7 +35,7 @@ export default class MapPageContainer extends React.Component {
   render() {
     return (
 <View style={styles.absoluteFillObject}>
-  <MapView style={styles.absoluteFillObject} region={this.state.mapRegion}>
+  <MapView style={styles.absoluteFillObject} region={this.state.mapRegion} provider={MapView.PROVIDER_GOOGLE}>
   <MapView.Marker coordinate={this.state.marker} />
    </MapView>
    <Image

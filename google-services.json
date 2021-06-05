@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "176653079997",
+    "project_id": "massive-journal-259405",
+    "storage_bucket": "massive-journal-259405.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:176653079997:android:859b2c13914b1e8c07eed4",
+        "android_client_info": {
+          "package_name": "com.gobirdie.gobirdie"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "176653079997-cb4c5guee089htiv7s5hvralm50195fg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gobirdie.gobirdie",
+            "certificate_hash": "c54e1e39d376bdc4d521371c62f03bf722ff8ac8"
+          }
+        },
+        {
+          "client_id": "176653079997-tch6jqtauuaplq4savpabvj9k73hpnb9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQFbfZGTl5zG3xaxK8V9-2-Ir19F_4Ps8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "176653079997-tch6jqtauuaplq4savpabvj9k73hpnb9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

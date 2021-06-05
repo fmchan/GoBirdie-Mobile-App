@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Slider, ScrollView, Dimensions, AsyncStorage, ActivityIndicator, StyleSheet, Image, View } from 'react-native';
-import { Button, Icon, Accordion, Container, Left, Body, Right, Separator, Header, Content, List, ListItem, Text, CheckBox, Radio } from 'native-base';
+import { Button, Icon, Accordion, Container, Left, Body, Right, Separator, Header, Content, List, ListItem, Text, CheckBox } from 'native-base';
 
 const win = Dimensions.get('window');
 
@@ -18,7 +18,7 @@ export default class PlaceAdvanceSearchContainer extends React.Component {
       facilities: [],
       facilityIds: [],
       organizations: [],
-      organizationId: null,
+      organizationIds: [],
       accordions: []
     };
   }
@@ -47,18 +47,18 @@ export default class PlaceAdvanceSearchContainer extends React.Component {
         i.content.length > 0 && i.content.map((item, key) => {
           //console.log(item.id + ' == ' + i.selected);
           return (
-            <ListItem key={item.id} selected={i.selected == item.id}
+            <ListItem key={item.id} selected={i.selected.includes(item.id)}
               onPress={() => this._accordionChange(key, i.title)}
               >
               <Left>
                 <Text>{item.name}</Text>
               </Left>
               <Right>
-                <Radio
-                  selected={i.selected == item.id}
+                <CheckBox
+                  checked={i.selected.includes(item.id)}
                   onPress={() => this._accordionChange(key, i.title)}
                   color={"#999"}
-                  selectedColor={"#ffb701"}
+                  selectedColor={"#F4B815"}
                 />
               </Right>
             </ListItem>
@@ -86,9 +86,9 @@ export default class PlaceAdvanceSearchContainer extends React.Component {
             isLoaded: true,
             organizations: result.data.organizations,
             accordions: [
-              { title: "地區", content: result.data.districts, selected:null },
-              { title: "時間", content: result.data.hours, selected:null },
-              { title: "室內/戶外", content: result.data.areas, selected:null }
+              { title: "地區", content: result.data.districts, selected:[] },
+              { title: "時間", content: result.data.hours, selected:[] },
+              { title: "室內/戶外", content: result.data.areas, selected:[] }
             ],
           }, () => {
           console.log(this.state.districts);
@@ -148,18 +148,31 @@ export default class PlaceAdvanceSearchContainer extends React.Component {
     console.log(newFacilityIds);
   }
   _organizationChange(id) {
+    var organizationIds = this.state.organizationIds;
+    var newOrganizationIds = [];
+    if (organizationIds.includes(id)) {
+      organizationIds.splice(organizationIds.indexOf(id), 1);
+      newOrganizationIds = organizationIds;
+    } else
+      newOrganizationIds = organizationIds.concat(id);
     this.setState({
-      organizationId: id,
+      organizationIds: newOrganizationIds,
     });
-    console.log(id);
+    console.log(newOrganizationIds);
   }
 
   _accordionChange(key, title) {
     var arr = this.state.accordions;
     arr.forEach(function (a, index) {
-      if(a.title == title && a.content != null && a.content[key] != null) {
-        //console.log(a.content[key].id);
-        a.selected = a.content[key].id;
+      if(a.title == title && a.content != null) {
+        var id = a.content[key].id;
+        var selected = a.selected;
+        if (selected.includes(id)) {
+          selected.splice(selected.indexOf(id), 1);
+          a.selected = selected;
+        } else
+          a.selected = selected.concat(id);
+        console.log(a.selected);
       }
     });
 
@@ -193,7 +206,7 @@ export default class PlaceAdvanceSearchContainer extends React.Component {
       {field: "opening_hours", value: arr[1].selected},
       {field: "area", value: arr[2].selected},
       {field: "facilities", value: this.state.facilityIds},
-      {field: "organization", value: this.state.organizationId},
+      {field: "organization", value: this.state.organizationIds},
     ];
 
     this.props.navigation.navigate("PlaceResult", { advanceSearch: advanceSearch });
@@ -255,14 +268,14 @@ export default class PlaceAdvanceSearchContainer extends React.Component {
             {
               organizations.length > 0 && organizations.map((item, key) => {
                 return (
-                  <ListItem key={item.id} selected={this.state.organizationId == item.id}
+                  <ListItem key={item.id} selected={this.state.organizationIds.includes(item.id)}
                   onPress={() => this._organizationChange(item.id)}>
                     <Left>
                       <Text>{item.name}</Text>
                     </Left>
                     <Right>
                       <CheckBox
-                        checked={this.state.organizationId == item.id}
+                        checked={this.state.organizationIds.includes(item.id)}
                         onPress={() => this._organizationChange(item.id)}
                         color={"#999"}
                         selectedColor={"#F4B815"}
@@ -278,7 +291,7 @@ export default class PlaceAdvanceSearchContainer extends React.Component {
         <Button bordered rounded style={{ width: '100%', justifyContent:'center', alignItems:'center'}}
         onPress={ this.searchSubmit }
         >
-          <Text>搜尋</Text>
+          <Text style={{ width: '100%', textAlign: 'center' }}>搜尋</Text>
         </Button>
       </View>
       </Container>

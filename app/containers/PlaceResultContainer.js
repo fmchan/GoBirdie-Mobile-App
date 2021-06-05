@@ -31,8 +31,8 @@ export default class PlaceResultContainer extends React.Component {
   fetchPlaces() {
     var { currentFilter, currentPage, text, chosenDate, advanceSearch } = this.state;
 
-    var params = (currentPage != 0? ("&categories=" + currentPage) : "");
-               + (text != ''? ("&search=" + text) : "");
+    var params = (currentPage != 0? ("&categories=" + currentPage) : "")
+               + (text != '' && text != null? ("&search=" + text) : "");
     if(advanceSearch.length > 0)
       advanceSearch.forEach(function (a, index) {
         if(a.value != null)
