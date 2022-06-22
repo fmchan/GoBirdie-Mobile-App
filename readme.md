@@ -6,9 +6,6 @@ Also, an admin portal for media editing and configuration: https://github.com/fm
 
 ### Demos: ###
 
-<video src="showcases/videos/RPReplay_Final1573543954.mp4" width="350"/>
-<video src="showcases/videos/RPReplay_Final1573544181.mp4" width="350"/>
-
 ### Screenshots: ###
 
 <img src="showcases/screenshots/(1).PNG" width="350"/>
