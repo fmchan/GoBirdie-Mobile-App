@@ -4,8 +4,6 @@ A mobile app dedicated to parent-child groups so they could browse and search di
 
 Also, an admin portal for media editing and configuration: https://github.com/fmchan/GoBirdie-Backend
 
-### Demos: ###
-
 ### Screenshots: ###
 
 <img src="showcases/screenshots/(1).PNG" width="350"/>
