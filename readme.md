@@ -1,10 +1,16 @@
-## GoBirdie Mobile App (React Native Expo) ##
+## GoBirdie Mobile App (React Native Expo)
 
 A mobile app dedicated to parent-child groups so they could browse and search different activities with detailed descriptions.
 
 Also, an admin portal for media editing and configuration: https://github.com/fmchan/GoBirdie-Backend
 
-### Screenshots: ###
+### Environment:
+
+- AVD: android 11, api 30
+- expo 4.3.4
+- expo client on android emulator: 2.17.5 (support SDK 39)
+
+### Screenshots:
 
 <img src="showcases/screenshots/(1).PNG" width="350"/>
 <img src="showcases/screenshots/(2).PNG" width="350"/>
