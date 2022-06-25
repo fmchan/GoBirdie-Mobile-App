@@ -46,7 +46,7 @@ export default class MapPageContainer extends React.Component {
     );
   }
 }
-const styles: any = StyleSheet.create({
+const styles = StyleSheet.create({
 	absoluteFillObject : {
 	  position: 'absolute',
 	  left: 0,

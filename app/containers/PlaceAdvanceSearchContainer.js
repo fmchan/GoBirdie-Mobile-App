@@ -299,7 +299,7 @@ export default class PlaceAdvanceSearchContainer extends React.Component {
     }
   }
 }
-const styles: any = StyleSheet.create({
+const styles = StyleSheet.create({
     header: {
       color: '#7d5114',
       fontWeight: 'bold',

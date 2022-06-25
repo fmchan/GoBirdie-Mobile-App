@@ -468,7 +468,7 @@ export default class DetailPageContainer extends React.Component {
 
 }
 
-const styles: any = StyleSheet.create({
+const styles = StyleSheet.create({
   left: {
     width: 50,
   },

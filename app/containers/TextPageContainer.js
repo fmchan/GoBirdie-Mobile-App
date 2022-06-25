@@ -40,5 +40,5 @@ export default class TextPageContainer extends React.Component {
     }
   }
 }
-const styles: any = StyleSheet.create({
+const styles = StyleSheet.create({
 });

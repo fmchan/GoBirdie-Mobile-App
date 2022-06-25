@@ -152,5 +152,5 @@ export default class ArticleResultContainer extends React.Component {
     }
   }
 }
-const styles: any = StyleSheet.create({
+const styles = StyleSheet.create({
 });

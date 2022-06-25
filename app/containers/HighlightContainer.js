@@ -91,5 +91,5 @@ export default class HighlightContainer extends React.Component {
     }
   }
 }
-const styles: any = StyleSheet.create({
+const styles = StyleSheet.create({
 });

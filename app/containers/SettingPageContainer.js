@@ -174,7 +174,7 @@ export default class SettingPageContainer extends React.Component {
     }
   }
 }
-const styles: any = StyleSheet.create({
+const styles = StyleSheet.create({
     image: {
         width:win.width - 50,
         height:200,

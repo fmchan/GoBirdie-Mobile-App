@@ -170,7 +170,7 @@ export default class ArticleListContainer extends React.Component {
 
 }
 
-const styles: any = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',

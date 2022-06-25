@@ -114,5 +114,5 @@ export default class PlaceResultContainer extends React.Component {
     }
   }
 }
-const styles: any = StyleSheet.create({
+const styles = StyleSheet.create({
 });
