@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
-import { DatePicker } from 'native-base';
+import DatePicker from 'react-native-datepicker';
 
 export default class DateMenu extends React.Component {
   constructor(props) {
@@ -25,7 +25,6 @@ export default class DateMenu extends React.Component {
   componentDidMount() {
     this.props.onRef(this);
   }
-
 	render() {
 	const { onFilterPress, currentFilter, setDate } = this.props;
 	return (
@@ -36,21 +35,31 @@ export default class DateMenu extends React.Component {
       this.filter.length > 0 && this.filter.map((item, key) => {
         if(item.id == 4) return (
          <DatePicker
-          ref={this.datepick}
-          key={item.id} 
-          //defaultDate={new Date()}
-          locale={"zh_hk"}
-          timeZoneOffsetInMinutes={undefined}
-          modalTransparent={false}
-          animationType={"fade"}
-          androidMode={"default"}
-          placeHolderText="指定時間"
-          textStyle={styles.activeFilterItem}
-          placeHolderTextStyle={styles.filterItem}
-          onDateChange={setDate}
-          disabled={false}
-          style={{backgroundColor: 'black'}}
-          />
+          style={styles.datePickerStyle}
+          date='09-10-2020' //initial date from state
+          mode="date" //The enum of date, datetime and time
+          placeholder="select date"
+          format="DD-MM-YYYY"
+          minDate="01-01-2016"
+          maxDate="01-01-2019"
+          confirmBtnText="Confirm"
+          cancelBtnText="Cancel"
+          customStyles={{
+            dateIcon: {
+              //display: 'none',
+              position: 'absolute',
+              left: 0,
+              top: 4,
+              marginLeft: 0,
+            },
+            dateInput: {
+              marginLeft: 36,
+            },
+          }}
+          onDateChange={(date) => {
+            setDate(date);
+          }}
+        />
         );
         return (
         <Text style={currentFilter == item.id ? styles.activeFilterItem : styles.filterItem} button onPress={() => onFilterPress(item.id)} key={key}>{item.name}</Text>
